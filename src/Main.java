@@ -25,6 +25,8 @@ public class Main {
                 case ("2"):
                     System.out.println("Goodbye");
                     return;
+                default:
+                    System.out.println("Invalid input!");
             }
 
         }
