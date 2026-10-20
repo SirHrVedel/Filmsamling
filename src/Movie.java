@@ -14,4 +14,22 @@ public class Movie {
         this.genre = genre;
         this.isColorBlack = isColorBlack;
     }
+   public String getTitle(){
+        return title;
+   }
+   public String getInstructor(){
+        return instructor;
+   }
+   public int getYear(){
+        return year;
+   }
+   public int getMinutes(){
+        return minutes;
+   }
+   public String getGenre(){
+        return genre;
+   }
+   public boolean isColorBlack(){
+        return isColorBlack;
+   }
 }
