@@ -29,7 +29,27 @@ public class Movie {
    public String getGenre(){
         return genre;
    }
-   public boolean isColorBlack(){
+   public boolean getIsColorBlack(){
         return isColorBlack;
    }
+   public void setGenre(String genre){
+        this.genre = genre;
+   }
+
+    public void setColorBlack(boolean colorBlack) {
+        isColorBlack = colorBlack;
+    }
+
+    public void setInstructor(String instructor) {
+        this.instructor = instructor;
+    }
+    public void setTitle(String title){
+        this.title = title;
+    }
+    public void setYear(int year){
+        this.year = year;
+    }
+    public void setMinutes(int minutes){
+        this.minutes = minutes;
+    }
 }
