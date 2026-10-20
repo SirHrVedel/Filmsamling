@@ -7,10 +7,9 @@ public class Main {
 
         ArrayList<Movie> movieList = new ArrayList<>();
 
-        Movie movie = new Movie("Lykken", "Jaden", 2008,58,"Horror", "black");
+        Movie movie = new Movie("Lykken", "Jaden", 2008,58,"Horror", false);
         movieList.add(movie);
 
-        System.out.println("Hello World!");
 
         UserInterface ui = new UserInterface();
         Scanner scanner = new Scanner(System.in);
@@ -22,11 +21,13 @@ public class Main {
             switch (input.toLowerCase()){
                 case ("1"):
                     System.out.println("Not implemented");
+                    break;
                 case ("2"):
                     System.out.println("Goodbye");
                     return;
                 default:
                     System.out.println("Invalid input!");
+                    break;
             }
 
         }

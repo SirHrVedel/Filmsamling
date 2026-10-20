@@ -14,4 +14,5 @@ public class UserInterface {
         System.out.print("> ");
         return scanner.nextLine();
     }
+
 }
