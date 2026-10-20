@@ -14,4 +14,12 @@ public class UserInterface {
         System.out.print("> ");
         return scanner.nextLine();
     }
+
+    public static int awaitInputInt(Scanner scanner, String text){
+        // Await player input
+        System.out.println();
+        System.out.println(text);
+        System.out.print("> ");
+        return scanner.nextInt();
+    }
 }

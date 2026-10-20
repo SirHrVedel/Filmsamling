@@ -1,9 +1,9 @@
 import java.util.ArrayList;
 
-public class movieCollection {
+public class MovieCollection {
     private ArrayList<Movie> movies;
 
-    public movieCollection(){
+    public MovieCollection(){
        movies = new ArrayList<>();
     }
 
