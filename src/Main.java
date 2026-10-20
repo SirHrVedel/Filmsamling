@@ -4,6 +4,12 @@ import java.util.ArrayList;
 
 public class Main {
     static void main(String[] args) {
+
+        ArrayList<Movie> movieList = new ArrayList<>();
+
+        Movie movie = new Movie("Lykken", "Jaden", 2008,58,"Horror", "black");
+        movieList.add(movie);
+
         System.out.println("Hello World!");
 
         UserInterface ui = new UserInterface();
@@ -21,11 +27,6 @@ public class Main {
                     return;
             }
 
-
-
         }
     }
-
-    ArrayList<Movie> movieList = new ArrayList<>();
-    Movie movie = new Movie("Lykken", "Jaden", 2008,58,"Horror", "black");
 }
