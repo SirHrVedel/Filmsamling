@@ -23,7 +23,7 @@ public class MovieCollection {
     public ArrayList<Movie> searchMovies(String text){
         ArrayList<Movie> searchResults = new ArrayList<>();
         for (Movie current : movies) {
-            if (current.getTitle().equals(text) || current.getInstructor().equals(text) || current.getGenre().equals(text)) {
+            if (current.getTitle().equalsIgnoreCase(text)) {
                 searchResults.add(current);
             }
         }
