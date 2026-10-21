@@ -8,7 +8,7 @@ public class Controller {
     }
 
     public void addMovie(String title, String director, int year, int lengthInMinutes, Boolean isColor, String genre){
-        //todo
+        movieCollection.addMovie(title, director, year,lengthInMinutes,isColor, genre);
     }
 
     public ArrayList<Movie> searchMovies(String text){

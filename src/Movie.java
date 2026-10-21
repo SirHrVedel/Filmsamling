@@ -6,7 +6,7 @@ public class Movie {
     private String genre;
     private boolean isColor;
 
-    public Movie(String title, String instructor, int year, int minutes, String genre, boolean isColor){
+    public Movie(String title, String instructor, int year, int minutes, boolean isColor, String genre){
         this.title = title;
         this.instructor = instructor;
         this.year = year;
