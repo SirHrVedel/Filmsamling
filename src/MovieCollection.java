@@ -32,13 +32,26 @@ public class MovieCollection {
 
     public boolean editMovie(Movie movie, String title, String director, int yearCreated,
                              boolean inColor, int lengthInMinutes, String genre){
-
-        return false;
+        if(movie == null){
+            return false;
+        }
+        movie.setTitle(title);
+        movie.setGenre(genre);
+        movie.setInstructor(director);
+        movie.setColorBlack(inColor);
+        movie.setMinutes(lengthInMinutes);
+        movie.setYear(yearCreated);
+        return true;
     }
 
     public boolean deleteMovie(Movie movie){
+    if(movies.remove(movie)){
+        return true;
+    }
+    else{
+        return false;
+    }
 
-    return false;
     }
 
     // get the first movie with the inputted title name.
