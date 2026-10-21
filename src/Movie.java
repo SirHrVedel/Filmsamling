@@ -4,15 +4,15 @@ public class Movie {
     private int year;
     private int minutes;
     private String genre;
-    private boolean isColorBlack;
+    private boolean isColor;
 
-    public Movie(String title, String instructor, int year, int minutes, String genre, boolean isColorBlack){
+    public Movie(String title, String instructor, int year, int minutes, String genre, boolean isColor){
         this.title = title;
         this.instructor = instructor;
         this.year = year;
         this.minutes = minutes;
         this.genre = genre;
-        this.isColorBlack = isColorBlack;
+        this.isColor = isColor;
     }
    public String getTitle(){
         return title;
@@ -30,14 +30,14 @@ public class Movie {
         return genre;
    }
    public boolean getIsColorBlack(){
-        return isColorBlack;
+        return isColor;
    }
    public void setGenre(String genre){
         this.genre = genre;
    }
 
-    public void setColorBlack(boolean colorBlack) {
-        isColorBlack = colorBlack;
+    public void setColorBlack(boolean isColor) {
+        this.isColor = isColor;
     }
 
     public void setInstructor(String instructor) {
