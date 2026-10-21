@@ -21,6 +21,7 @@ public class Controller {
                     boolean isColorMovie = decideColor();
 
                     movieCollection.addMovie(title, director, year, isColorMovie, minutes, genre);
+                    System.out.println("the book '" + title + "' was added to the collection!");
                     break;
                 case ("2"):
                     System.out.println("Goodbye");
