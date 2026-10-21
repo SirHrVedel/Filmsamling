@@ -16,7 +16,7 @@ public class MovieCollection {
     }
 
     public int getNumberOfMovies(){
-        return 0;
+        return movies.size();
     }
 
     public ArrayList<Movie> searchMovies(String text){
