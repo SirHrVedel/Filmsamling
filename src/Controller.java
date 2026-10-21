@@ -12,18 +12,17 @@ public class Controller {
     }
 
     public ArrayList<Movie> searchMovies(String text){
-        //todo
-        return null;
+
+        return movieCollection.searchMovies(text);
     }
 
     public boolean editMovie(Movie movie, String title, String director, int year, int lengthInMinutes, boolean isColor, String genre){
-        //todo
-        return false;
+
+        return movieCollection.editMovie(movie, title, director, year, isColor, lengthInMinutes, genre);
     }
 
     public boolean deleteMovie(Movie movie){
-        //todo
-        return false;
+        return movieCollection.deleteMovie(movie);
     }
 }
 

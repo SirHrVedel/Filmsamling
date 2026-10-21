@@ -8,7 +8,7 @@ class MovieCollectionTest {
     @Test
     void addMovie() {
         ArrayList<Movie> movies = new ArrayList<>();
-        movies.add(new Movie("test", "test", 1000, 200, "test", false));
+        movies.add(new Movie("test", "test", 1000, 200, false,"test"));
         assertNotNull(movies);
     }
 }
