@@ -10,16 +10,24 @@ public class UserInterface {
     public static String awaitInput(Scanner scanner, String text){
         // Await player input
         System.out.println();
-        System.out.println(text);
+        // don't write the message line if an empty string is provided
+        if (!text.isEmpty()){
+            System.out.println(text);
+        }
         System.out.print("> ");
         return scanner.nextLine();
     }
 
     public static int awaitInputInt(Scanner scanner, String text){
-        // Await player input
-        System.out.println();
-        System.out.println(text);
-        System.out.print("> ");
-        return scanner.nextInt();
+        // Keep asking until the player enters a valid integer
+        while (true) {
+            try {
+                // reuse await input and parse it to an integer. Reprompts if the input isn't an integer.
+                return Integer.parseInt(awaitInput(scanner, text).trim());
+            }
+            catch (NumberFormatException e){
+                System.out.println("That is not a number!");
+            }
+        }
     }
 }
