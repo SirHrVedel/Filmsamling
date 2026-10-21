@@ -8,7 +8,8 @@ public class MovieCollection {
     }
 
     public void addMovie(String title, String director, int yearCreated, boolean inColor, int lengthInMinutes, String genre){
-        //todo
+        Movie movie = new Movie(title, director, yearCreated, lengthInMinutes, genre, inColor);
+        movies.add(movie);
     }
 
     public ArrayList<Movie> getMovies() {
@@ -20,8 +21,13 @@ public class MovieCollection {
     }
 
     public ArrayList<Movie> searchMovies(String text){
-
-        return null; //todo
+        ArrayList<Movie> searchResults = new ArrayList<>();
+        for (Movie current : movies) {
+            if (current.getTitle().equals(text) || current.getInstructor().equals(text) || current.getGenre().equals(text)) {
+                searchResults.add(current);
+            }
+        }
+        return searchResults;
     }
 
     public boolean editMovie(Movie movie, String title, String director, int yearCreated,
@@ -33,6 +39,16 @@ public class MovieCollection {
     public boolean deleteMovie(Movie movie){
 
     return false;
+    }
+
+    // get the first movie with the inputted title name.
+    private Movie getMovieByTitle(String title){
+        for (Movie current : movies) {
+            if (current.getTitle().equals(title)) {
+                return current;
+            }
+        }
+        return null;
     }
 
 }
