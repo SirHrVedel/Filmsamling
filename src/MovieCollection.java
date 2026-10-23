@@ -23,7 +23,7 @@ public class MovieCollection {
     public ArrayList<Movie> searchMovies(String text){
         ArrayList<Movie> searchResults = new ArrayList<>();
         for (Movie current : movies) {
-            if (current.getTitle().equalsIgnoreCase(text)) {
+            if (current.getTitle().toLowerCase().contains(text)) {
                 searchResults.add(current);
             }
         }
@@ -45,12 +45,7 @@ public class MovieCollection {
     }
 
     public boolean deleteMovie(Movie movie){
-    if(movies.remove(movie)){
-        return true;
-    }
-    else{
-        return false;
-    }
+        return movies.remove(movie);
 
     }
 
