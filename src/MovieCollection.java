@@ -33,9 +33,10 @@ public class MovieCollection {
 
     public boolean editMovie(Movie movie, String title, String director, int yearCreated,
                              boolean inColor, int lengthInMinutes, String genre) {
-        if (movie == null) {
+        if (movie == null || !movies.contains(movie)) {
             return false;
         }
+
         movie.setTitle(title);
         movie.setGenre(genre);
         movie.setInstructor(director);

@@ -93,11 +93,9 @@ class MovieCollectionTest {
     @Test
     void editMovieSuccess() {
         MovieCollection movieCollection = new MovieCollection();
-
-        Movie movie = new Movie("ski", "ski", 2000, 120, true, "horror");
         movieCollection.addMovie("ski", "ski", 2000, 120, true, "horror");
         boolean result = movieCollection.editMovie(
-                movie, "ski", "ski", 2000, true, 120, "horror"
+                movieCollection.getMovies().getFirst(), "ski", "ski", 2000, true, 120, "horror"
         );
 
         assertTrue(result);
