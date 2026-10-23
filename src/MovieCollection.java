@@ -38,7 +38,7 @@ public class MovieCollection {
         movie.setTitle(title);
         movie.setGenre(genre);
         movie.setInstructor(director);
-        movie.setColorBlack(inColor);
+        movie.setIsColor(inColor);
         movie.setMinutes(lengthInMinutes);
         movie.setYear(yearCreated);
         return true;
