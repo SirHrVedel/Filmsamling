@@ -3,11 +3,11 @@ import java.util.ArrayList;
 public class MovieCollection {
     private ArrayList<Movie> movies;
 
-    public MovieCollection(){
-       movies = new ArrayList<>();
+    public MovieCollection() {
+        movies = new ArrayList<>();
     }
 
-    public void addMovie(String title, String director, int yearCreated, int lengthInMinutes, boolean inColor, String genre){
+    public void addMovie(String title, String director, int yearCreated, int lengthInMinutes, boolean inColor, String genre) {
         Movie movie = new Movie(title, director, yearCreated, lengthInMinutes, inColor, genre);
         movies.add(movie);
     }
@@ -16,11 +16,12 @@ public class MovieCollection {
         return movies; // todo
     }
 
-    public int getNumberOfMovies(){
+    public int getNumberOfMovies() {
         return movies.size();
     }
 
-    public ArrayList<Movie> searchMovies(String text){
+    public ArrayList<Movie> searchMovies(String text) {
+        text = text.toLowerCase();
         ArrayList<Movie> searchResults = new ArrayList<>();
         for (Movie current : movies) {
             if (current.getTitle().toLowerCase().contains(text)) {
@@ -31,8 +32,8 @@ public class MovieCollection {
     }
 
     public boolean editMovie(Movie movie, String title, String director, int yearCreated,
-                             boolean inColor, int lengthInMinutes, String genre){
-        if(movie == null){
+                             boolean inColor, int lengthInMinutes, String genre) {
+        if (movie == null) {
             return false;
         }
         movie.setTitle(title);
@@ -44,13 +45,13 @@ public class MovieCollection {
         return true;
     }
 
-    public boolean deleteMovie(Movie movie){
+    public boolean deleteMovie(Movie movie) {
         return movies.remove(movie);
 
     }
 
     // get the first movie with the inputted title name.
-    private Movie getMovieByTitle(String title){
+    private Movie getMovieByTitle(String title) {
         for (Movie current : movies) {
             if (current.getTitle().equals(title)) {
                 return current;
