@@ -7,8 +7,8 @@ public class MovieCollection {
        movies = new ArrayList<>();
     }
 
-    public void addMovie(String title, String director, int yearCreated, boolean inColor, int lengthInMinutes, String genre){
-        Movie movie = new Movie(title, director, yearCreated, lengthInMinutes, genre, inColor);
+    public void addMovie(String title, String director, int yearCreated, int lengthInMinutes, boolean inColor, String genre){
+        Movie movie = new Movie(title, director, yearCreated, lengthInMinutes, inColor, genre);
         movies.add(movie);
     }
 
