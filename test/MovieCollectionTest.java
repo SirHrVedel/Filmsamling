@@ -7,8 +7,17 @@ class MovieCollectionTest {
 
     @Test
     void addMovie() {
-        ArrayList<Movie> movies = new ArrayList<>();
-        movies.add(new Movie("test", "test", 1000, 200, "test", false));
-        assertNotNull(movies);
+        MovieCollection movieCollection = new MovieCollection();
+        movieCollection.addMovie("test", "test", 1000, true, 120, "testGenre");
+        assertNotNull(movieCollection.getMovies());
+    }
+
+    @Test
+    void deleteMovie() {
+        MovieCollection movieCollection = new MovieCollection();
+        movieCollection.addMovie("test", "test", 1000, true, 120, "testGenre");
+        ArrayList<Movie> movieList = movieCollection.getMovies();
+        assertTrue(movieCollection.deleteMovie(movieList.getFirst()));
+
     }
 }
