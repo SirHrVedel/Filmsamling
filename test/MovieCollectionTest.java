@@ -90,4 +90,26 @@ class MovieCollectionTest {
 
     }
 
+    @Test
+    void editMovieSuccess() {
+        MovieCollection movieCollection = new MovieCollection();
+
+        Movie movie = new Movie("ski", "ski", 2000, 120, true, "horror");
+        movieCollection.addMovie("ski", "ski", 2000, 120, true, "horror");
+        boolean result = movieCollection.editMovie(
+                movie, "ski", "ski", 2000, true, 120, "horror"
+        );
+
+        assertTrue(result);
+    }
+    @Test
+    void editMovieFail() {
+        MovieCollection movieCollection = new MovieCollection();
+
+        Movie movie = null;
+
+        boolean result = movieCollection.editMovie(movie, "hello", "hey", 2000, true, 120, "romantic");
+        assertFalse(result);
+    }
+
 }
