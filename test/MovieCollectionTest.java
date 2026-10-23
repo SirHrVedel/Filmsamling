@@ -58,6 +58,20 @@ class MovieCollectionTest {
     }
 
     @Test
+    void getNumberOffMovies() {
+        MovieCollection movieCollection = new MovieCollection();
+        assertEquals(0, movieCollection.getNumberOfMovies());
+        MovieCollection movieCollection1 = new MovieCollection();
+
+        movieCollection1.addMovie("test", "test", 1000, 120, true, "testGenre");
+        movieCollection1.addMovie("test2", "test2", 1001, 121, false, "testGenre2");
+        assertEquals(2, movieCollection1.getNumberOfMovies());
+
+    }
+
+
+
+    @Test
     void searchMoviesFindOneMovie() {
         MovieCollection movieCollection = new MovieCollection();
         movieCollection.addMovie("help", "help", 300, 3000, true, "action");
@@ -74,6 +88,28 @@ class MovieCollectionTest {
         movieCollection.addMovie("lost", "peter", 1000, 50, true, "action");
         assertEquals(2, movieCollection.searchMovies("Shush").size());
 
+    }
+
+    @Test
+    void editMovieSuccess() {
+        MovieCollection movieCollection = new MovieCollection();
+
+        Movie movie = new Movie("ski", "ski", 2000, 120, true, "horror");
+        movieCollection.addMovie("ski", "ski", 2000, 120, true, "horror");
+        boolean result = movieCollection.editMovie(
+                movie, "ski", "ski", 2000, true, 120, "horror"
+        );
+
+        assertTrue(result);
+    }
+    @Test
+    void editMovieFail() {
+        MovieCollection movieCollection = new MovieCollection();
+
+        Movie movie = null;
+
+        boolean result = movieCollection.editMovie(movie, "hello", "hey", 2000, true, 120, "romantic");
+        assertFalse(result);
     }
 
 }
