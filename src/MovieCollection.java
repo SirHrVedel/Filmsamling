@@ -13,7 +13,7 @@ public class MovieCollection {
     }
 
     public ArrayList<Movie> getMovies() {
-        return movies; // todo
+        return movies;
     }
 
     public int getNumberOfMovies() {
