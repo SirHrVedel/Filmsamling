@@ -43,10 +43,10 @@ class MovieCollectionTest {
     @Test
     void deleteMovieThatDoesntExist(){
         MovieCollection movieCollection = new MovieCollection();
-
+        Movie fakeMovie = new Movie("test3", "test", 1000, 120, true, "testGenre");
         movieCollection.addMovie("test", "test", 1000, 120, true, "testGenre");
         ArrayList<Movie> movieList = movieCollection.getMovies();
-        assertFalse(movieCollection.deleteMovie(movieList.getFirst()));
+        assertFalse(movieCollection.deleteMovie(fakeMovie));
     }
 
     @Test
