@@ -49,7 +49,7 @@ public class UserInterface {
     }
 
     public void printWelcome() {
-        System.out.println("1. Create book.");
+        System.out.println("1. Create movie.");
         System.out.println("2. Exit.");
     }
 
