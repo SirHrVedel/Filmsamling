@@ -18,8 +18,14 @@ public class UserInterface {
                     int minutes = awaitInputInt(scanner, "Minutes");
                     String genre = awaitInput(scanner, "Genre");
                     boolean isColorMovie = decideColor();
+                    try {
+                        controller.addMovie(title, director, year, minutes, isColorMovie, genre);
+                    } catch (IllegalArgumentException e) {
+                        System.out.println("Invalid argument. Make sure that you wrote the info correctly.");
+                    } catch (Exception e){
+                        System.out.println("An error occurred.");
+                    }
 
-                    controller.addMovie(title, director, year, minutes, isColorMovie, genre);
                     System.out.println("the movie '" + title + "' was added to the collection!");
                     break;
                 case ("2"):
