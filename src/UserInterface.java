@@ -5,8 +5,8 @@ public class UserInterface {
     private Controller controller = new Controller();
 
     public void startProgram() {
+        printWelcome();
         while (true) {
-            printWelcome();
             String input = awaitInput(scanner, "");
 
 
@@ -25,6 +25,9 @@ public class UserInterface {
                 case ("2"):
                     System.out.println("Goodbye");
                     return;
+                case ("help"):
+                    printWelcome();
+                    break;
                 default:
                     System.out.println("Invalid input!");
             }
