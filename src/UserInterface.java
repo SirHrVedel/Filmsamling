@@ -20,7 +20,7 @@ public class UserInterface {
                     boolean isColorMovie = decideColor();
 
                     controller.addMovie(title, director, year, minutes, isColorMovie, genre);
-                    System.out.println("the book '" + title + "' was added to the collection!");
+                    System.out.println("the movie '" + title + "' was added to the collection!");
                     break;
                 case ("2"):
                     System.out.println("Goodbye");
