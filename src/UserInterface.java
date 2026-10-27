@@ -1,8 +1,32 @@
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class UserInterface {
     private Scanner scanner = new Scanner(System.in);
     private Controller controller = new Controller();
+
+    public static String awaitInput(Scanner scanner, String text) {
+        // Await player input
+        System.out.println();
+        // don't write the message line if an empty string is provided
+        if (!text.isEmpty()) {
+            System.out.println(text);
+        }
+        System.out.print("> ");
+        return scanner.nextLine();
+    }
+
+    public static int awaitInputInt(Scanner scanner, String text) {
+        // Keep asking until the player enters a valid integer
+        while (true) {
+            try {
+                // reuse await input and parse it to an integer. Reprompts if the input isn't an integer.
+                return Integer.parseInt(awaitInput(scanner, text).trim());
+            } catch (NumberFormatException e) {
+                System.out.println("That is not a number!");
+            }
+        }
+    }
 
     public void startProgram() {
         while (true) {
@@ -25,6 +49,24 @@ public class UserInterface {
                 case ("2"):
                     System.out.println("Goodbye");
                     return;
+                case ("edit movie"):
+                    ArrayList<Movie> movies = controller.getMovies();
+                    int count = 0;
+                    for (Movie movie : movies) {
+                        count++;
+                        System.out.println(count + " " + movie.getTitle());
+
+                    }
+                    int chosen = awaitInputInt(scanner, "which movie would you like to edit");
+                    Movie chosenMovie = movies.get(chosen - 1);
+                    String title2 = awaitInput(scanner, "Movie title");
+                    String director2 = awaitInput(scanner, "director");
+                    int year2 = awaitInputInt(scanner, "Year");
+                    int minutes2 = awaitInputInt(scanner, "Minutes");
+                    String genre2 = awaitInput(scanner, "Genre");
+                    boolean isColorMovie2 = decideColor();
+                    controller.editMovie(chosenMovie, title2, director2, year2, minutes2, isColorMovie2, genre2);
+
                 default:
                     System.out.println("Invalid input!");
             }
@@ -48,28 +90,5 @@ public class UserInterface {
     public void printWelcome() {
         System.out.println("1. Create book.");
         System.out.println("2. Exit.");
-    }
-
-    public static String awaitInput(Scanner scanner, String text) {
-        // Await player input
-        System.out.println();
-        // don't write the message line if an empty string is provided
-        if (!text.isEmpty()) {
-            System.out.println(text);
-        }
-        System.out.print("> ");
-        return scanner.nextLine();
-    }
-
-    public static int awaitInputInt(Scanner scanner, String text) {
-        // Keep asking until the player enters a valid integer
-        while (true) {
-            try {
-                // reuse await input and parse it to an integer. Reprompts if the input isn't an integer.
-                return Integer.parseInt(awaitInput(scanner, text).trim());
-            } catch (NumberFormatException e) {
-                System.out.println("That is not a number!");
-            }
-        }
     }
 }
