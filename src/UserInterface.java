@@ -15,7 +15,6 @@ public class UserInterface {
             String genre;
             boolean isColorMovie;
             String input = awaitInput(scanner, "");
-            int inputInt;
 
             switch (input.toLowerCase()) {
                 case ("1"):
@@ -45,6 +44,24 @@ public class UserInterface {
                 case ("help"):
                     printWelcome();
                     break;
+                case ("edit movie"):
+                    ArrayList<Movie> movies = controller.getMovies();
+                    int count = 0;
+                    for (Movie movie : movies) {
+                        count++;
+                        System.out.println(count + " " + movie.getTitle());
+
+                    }
+                    int chosen = awaitInputInt(scanner, "which movie would you like to edit");
+                    Movie chosenMovie = movies.get(chosen - 1);
+                    title = awaitInput(scanner, "Movie title");
+                    director = awaitInput(scanner, "director");
+                    year = awaitInputInt(scanner, "Year");
+                    minutes = awaitInputInt(scanner, "Minutes");
+                    genre = awaitInput(scanner, "Genre");
+                    isColorMovie = decideColor();
+                    controller.editMovie(chosenMovie, title, director, year, minutes, isColorMovie, genre);
+
                 default:
                     System.out.println("Invalid input!");
             }
