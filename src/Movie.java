@@ -11,11 +11,11 @@ public class Movie {
     private LocalDate lastWatched;
 
     public Movie(String title, String instructor, int year, int minutes, boolean isColor, String genre){
-        this.title = title;
-        this.instructor = instructor;
+        setTitle(title);
+        setInstructor(instructor);
         setYear(year);
-        this.minutes = minutes;
-        this.genre = genre;
+        setMinutes(minutes);
+        setGenre(genre);
         this.isInColor = isColor;
     }
    public String getTitle(){
@@ -37,6 +37,11 @@ public class Movie {
         return isInColor;
    }
    public void setGenre(String genre){
+        if (genre.isEmpty()){
+            throw new IllegalArgumentException(
+                    "A genre must be assigned!"
+            );
+        }
         this.genre = genre;
    }
 
@@ -45,9 +50,19 @@ public class Movie {
     }
 
     public void setInstructor(String instructor) {
+        if (instructor.isEmpty()){
+            throw new IllegalArgumentException(
+                    "A director must be assigned!"
+            );
+        }
         this.instructor = instructor;
     }
     public void setTitle(String title){
+        if (title.isEmpty()){
+            throw new IllegalArgumentException(
+                    "A title must be assigned!"
+            );
+        }
         this.title = title;
     }
     public void setYear(int year){
@@ -61,6 +76,11 @@ public class Movie {
         this.year = year;
     }
     public void setMinutes(int minutes){
+        if (minutes < 1){
+            throw new IllegalArgumentException(
+                    "The movie's runtime must be 1 minute or longer!"
+            );
+        }
         this.minutes = minutes;
     }
     public void markAsWatched(LocalDate date) {
