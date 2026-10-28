@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 public class UserInterface {
@@ -7,64 +8,50 @@ public class UserInterface {
 
     public void startProgram() {
         printWelcome();
-        while (true) {
-            String title;
-            String director;
-            int year;
-            int minutes;
-            String genre;
-            boolean isColorMovie;
-            String input = awaitInput(scanner, "");
+        try {
+            while (true) {
+                String input = awaitInput(scanner, "");
 
-            switch (input.toLowerCase()) {
-                case ("1"):
-                    title = awaitInput(scanner, "Movie title");
-                    director = awaitInput(scanner, "director");
-                    year = awaitInputInt(scanner, "Year");
-                    minutes = awaitInputInt(scanner, "Minutes");
-                    genre = awaitInput(scanner, "Genre");
-                    isColorMovie = decideColor();
-                    try {
-                        controller.addMovie(title, director, year, minutes, isColorMovie, genre);
-                    } catch (IllegalArgumentException e) {
-                        System.out.println("The movie couldn't be created: " + e.getMessage());
-                    } catch (Exception e){
-                        System.out.println("An error occurred.");
-                    }
+                switch (input.toLowerCase()) {
+                    case ("1"):
+                        try {
+                            addMovie();
+                            break;
+                        } catch (IllegalArgumentException e) {
+                            System.out.println("An error occurred while adding the movie. " + e.getMessage());
+                        } catch (Exception e) {
+                            System.out.println("An error occurred.");
+                        }
+                        break;
+                    case ("2"):
+                        // delete movie
+                        try {
+                            deleteMovie();
+                        } catch (Exception e) {
+                            System.out.println("An error occurred. " + e.getMessage());
+                        }
 
-                    System.out.println("the movie '" + title + "' was added to the collection!");
-                    break;
-                case ("2"):
-                    // delete movie
-                    deleteMovie();
-                    break;
-                case ("3"):
-                    System.out.println("Goodbye");
-                    return;
-                case ("help"):
-                    printWelcome();
-                    break;
-                case ("edit movie"):
-                    ArrayList<Movie> movies = controller.getMovies();
-                    int count = 0;
-                    for (Movie movie : movies) {
-                        count++;
-                        System.out.println(count + " " + movie.getTitle());
-
-                    }
-                    int chosen = awaitInputInt(scanner, "which movie would you like to edit");
-                    Movie chosenMovie = movies.get(chosen - 1);
-                    title = awaitInput(scanner, "Movie title");
-                    director = awaitInput(scanner, "director");
-                    year = awaitInputInt(scanner, "Year");
-                    minutes = awaitInputInt(scanner, "Minutes");
-                    genre = awaitInput(scanner, "Genre");
-                    isColorMovie = decideColor();
-                    controller.editMovie(chosenMovie, title, director, year, minutes, isColorMovie, genre);
-
-                default:
-                    System.out.println("Invalid input!");
+                        break;
+                    case ("3"):
+                        System.out.println("Goodbye");
+                        return;
+                    case ("help"):
+                        printWelcome();
+                        break;
+                    case ("edit movie"):
+                        try {
+                            editMovie();
+                        } catch (Exception e) {
+                            System.out.println("An error occurred  " + e.getMessage());
+                        }
+                        break;
+                    default:
+                        System.out.println("Invalid input!");
+                }
             }
+        } catch (NoSuchElementException e){
+            System.out.println();
+            System.out.println("Input closed. Goodbye");
         }
     }
 
@@ -107,13 +94,22 @@ public class UserInterface {
                 return Integer.parseInt(awaitInput(scanner, text).trim());
             } catch (NumberFormatException e) {
                 System.out.println("That is not a whole number!");
-            } catch (Exception e){
-                System.out.println("An error occurred.");
             }
         }
     }
 
-    private void deleteMovie(){
+    private void addMovie() {
+        String title = awaitInput(scanner, "Movie title");
+        String director = awaitInput(scanner, "director");
+        int year = awaitInputInt(scanner, "Year");
+        int minutes = awaitInputInt(scanner, "Minutes");
+        String genre = awaitInput(scanner, "Genre");
+        boolean isColorMovie = decideColor();
+        controller.addMovie(title, director, year, minutes, isColorMovie, genre);
+        System.out.println("the movie '" + title + "' was added to the collection!");
+    }
+
+    private void deleteMovie() {
         String inputString = awaitInput(scanner, "What is the name of the movie you want to remove?");
         String movieTitle;
         ArrayList<Movie> movies = controller.searchMovies(inputString);
@@ -128,21 +124,60 @@ public class UserInterface {
             System.out.println("Multiple movies of the name: '" + inputString + "' was found.");
             System.out.println("Which one should be removed?");
             int i = 0;
-            for (Movie movie : movies){
+            for (Movie movie : movies) {
                 i++;
                 System.out.println(i + ". " + movie.getTitle() + ", " + movie.getInstructor() + ", " + movie.getYear());
             }
-            while (true){
+            while (true) {
                 int inputInt = awaitInputInt(scanner, "Input the number of he movie to be removed:");
-                if (inputInt > movies.size() || inputInt <= 0){
+                if (inputInt > movies.size() || inputInt <= 0) {
                     System.out.println("That is not a valid decision");
                 } else {
                     Movie chosenMovie = movies.get(inputInt - 1);
-                    controller.deleteMovie(chosenMovie);
+                    boolean result = controller.deleteMovie(chosenMovie);
+                    if (result){
+                        System.out.println("The movie '" + chosenMovie.getTitle() +  "' was deleted");
+                    } else System.out.println("The movie couldn't be deleted.");
                     return;
                 }
             }
 
+        }
+    }
+
+    private void editMovie() {
+        ArrayList<Movie> movies = controller.getMovies();
+        int count = 0;
+        if (movies.isEmpty()){
+            System.out.println("No movies to edit.");
+            return;
+        }
+
+        for (Movie movie : movies) {
+            count++;
+            System.out.println(count + ". " + movie.getTitle());
+
+        }
+
+        while (true){
+            int chosen = awaitInputInt(scanner, "Which movie would you like to edit?");
+
+            if (chosen > movies.size() || chosen <= 0){
+                System.out.println("That is not a valid decision");
+            } else {
+                Movie chosenMovie = movies.get(chosen - 1);
+                String title = awaitInput(scanner, "Movie title");
+                String director = awaitInput(scanner, "director");
+                int year = awaitInputInt(scanner, "Year");
+                int minutes = awaitInputInt(scanner, "Minutes");
+                String genre = awaitInput(scanner, "Genre");
+                boolean isColorMovie = decideColor();
+                boolean result = controller.editMovie(chosenMovie, title, director, year, minutes, isColorMovie, genre);
+                if (result) {
+                    System.out.println("The movie was edited with success");
+                } else System.out.println("The movie wasn't edited due to an error");
+                return;
+            }
         }
     }
 
