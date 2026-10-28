@@ -13,7 +13,7 @@ public class Movie {
     public Movie(String title, String instructor, int year, int minutes, boolean isColor, String genre){
         this.title = title;
         this.instructor = instructor;
-        this.year = year;
+        setYear(year);
         this.minutes = minutes;
         this.genre = genre;
         this.isInColor = isColor;
@@ -51,6 +51,13 @@ public class Movie {
         this.title = title;
     }
     public void setYear(int year){
+        int magicLimit = 1888;
+        int currentYear = LocalDate.now().getYear() + 1;
+        if (year <= magicLimit || year > currentYear) {
+            throw new IllegalArgumentException(
+                    "The year must be between " + magicLimit + " and " + currentYear + "."
+            );
+        }
         this.year = year;
     }
     public void setMinutes(int minutes){
