@@ -9,6 +9,7 @@ public class Movie {
     private String genre;
     private boolean isInColor;
     private LocalDate lastWatched;
+    private Loan loan;
 
     public Movie(String title, String instructor, int year, int minutes, boolean isColor, String genre){
         this.title = title;
@@ -74,4 +75,23 @@ public class Movie {
     public long getDaysSinceWatched(LocalDate today){
         return ChronoUnit.DAYS.between(lastWatched, today);
     }
+
+    public void loanOut(LocalDate date){
+        this.loan = new Loan(title, date);
+    }
+
+    public void returnMovie(){
+        this.loan = null;
+    }
+
+    public boolean isLoaned(){
+        return loan != null;
+    }
+
+    public Loan getLoan(){
+        return loan;
+    }
+
+
+
 }

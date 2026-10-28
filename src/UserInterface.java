@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.time.LocalDate;
 
 public class UserInterface {
     private Scanner scanner = new Scanner(System.in);
@@ -21,15 +22,12 @@ public class UserInterface {
                     boolean isColorMovie = decideColor();
 
                     controller.addMovie(title, director, year, minutes, isColorMovie, genre);
-                    System.out.println("the book '" + title + "' was added to the collection!");
+                    System.out.println("the movie '" + title + "' was added to the collection!");
                     break;
                 case ("2"):
                     System.out.println("Goodbye");
                     return;
-                case ("help"):
-                    printWelcome();
-                    break;
-                case ("edit movie"):
+                case ("3"):
                     ArrayList<Movie> movies = controller.getMovies();
                     int count = 0;
                     for (Movie movie : movies) {
@@ -46,9 +44,50 @@ public class UserInterface {
                     String genre2 = awaitInput(scanner, "Genre");
                     boolean isColorMovie2 = decideColor();
                     controller.editMovie(chosenMovie, title2, director2, year2, minutes2, isColorMovie2, genre2);
+                    break;
 
+
+                case ("4"):
+                    //Todo, gør så der kan printes en liste af de lånte bøger og ret så
+                    // at man ikke skal vælge loan option og bog på ny når man ville returnere
+                    // eller en anden option
+
+                    loanOptions();
+                    Movie loanMovie = chooseMovie("which movie?");
+                    System.out.println("What action do you want to do?");
+                    String action = awaitInput(scanner, "loan / return / due / fine");
+                    LocalDate today = LocalDate.now();
+                    switch (action.toLowerCase()){
+                        case "loan" -> {
+                            loanMovie.loanOut(today);
+                            System.out.println("Loaned out. Due: " + loanMovie.getLoan().getDueDate());
+                        }
+                        case "return" -> {
+                            loanMovie.returnMovie();
+                            System.out.println("Movie returned");
+                        }
+                        case "due" -> {
+                            if (loanMovie.isLoaned()){
+                                System.out.println("Due date: " + loanMovie.getLoan().getDueDate());
+                            }else{
+                                System.out.println("There is no loan for this movie");}
+                        }
+                        case "fine" -> {
+                            if (loanMovie.isLoaned()){
+                                System.out.println("Fine: " + loanMovie.getLoan().getFine(today) + " Kr.");
+                            } else {
+                                System.out.println("There is no fine");
+                            }
+                        }
+                        default -> System.out.println("Invalid loan action!");
+                    }
+                    break;
+                case ("help"):
+                    printWelcome();
+                    break;
                 default:
                     System.out.println("Invalid input!");
+                    break;
             }
         }
     }
@@ -68,8 +107,19 @@ public class UserInterface {
     }
 
     public void printWelcome() {
-        System.out.println("1. Create book.");
+        System.out.println("1. Create movie.");
         System.out.println("2. Exit.");
+        System.out.println("3. edit movie");
+        System.out.println("4. loan movie");
+        System.out.println("help");
+    }
+
+    public void loanOptions() {
+        System.out.println("loan");
+        System.out.println("return");
+        System.out.println("due");
+        System.out.println("fine");
+
     }
 
     public static String awaitInput(Scanner scanner, String text) {
@@ -93,5 +143,14 @@ public class UserInterface {
                 System.out.println("That is not a number!");
             }
         }
+    }
+
+    private Movie chooseMovie(String prompt) {
+        ArrayList<Movie> movies = controller.getMovies();
+        for (int i = 0; i < movies.size(); i++) {
+            System.out.println((i + 1) + " " + movies.get(i).getTitle());
+        }
+        int chosen = awaitInputInt(scanner, prompt);
+        return movies.get(chosen - 1);
     }
 }
