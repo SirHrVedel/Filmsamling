@@ -1,5 +1,8 @@
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.time.format.DateTimeParseException;
 
 public class UserInterface {
     private Scanner scanner = new Scanner(System.in);
@@ -26,6 +29,41 @@ public class UserInterface {
                 case ("2"):
                     System.out.println("Goodbye");
                     return;
+                case ("6"): {
+                    ArrayList<Movie> moviesNow = controller.getMovies();
+                    int number = 0;
+                    for (Movie movies : moviesNow) {
+                        number++;
+                        System.out.println(number + " " + movies.getTitle());
+                    }
+                    int seen = awaitInputInt(scanner, "which movie would you like to mark as seen");
+                    Movie chosenMovie = moviesNow.get(seen - 1);
+                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+                    LocalDate date;
+                    while (true) {
+                        String dateInput = awaitInput(scanner, "dd-MM-yyyy");
+                        if (dateInput.isEmpty()) {
+                            date = LocalDate.now();
+
+                        } else {
+                            try {
+                                date = LocalDate.parse(dateInput, formatter);
+                            } catch (DateTimeParseException c) {
+                                System.out.println("date is not valid");
+                                continue;
+                            }
+
+                        }
+                        if(date.isAfter(LocalDate.now())) {
+                            System.out.println("the date is in the future");
+                        }
+                        else {
+                            controller.markAsWatched(chosenMovie, date);
+                        }
+                        break;
+                    }
+                    break;
+                }
                 case ("help"):
                     printWelcome();
                     break;
@@ -35,7 +73,6 @@ public class UserInterface {
                     for (Movie movie : movies) {
                         count++;
                         System.out.println(count + " " + movie.getTitle());
-
                     }
                     int chosen = awaitInputInt(scanner, "which movie would you like to edit");
                     Movie chosenMovie = movies.get(chosen - 1);
@@ -46,6 +83,7 @@ public class UserInterface {
                     String genre2 = awaitInput(scanner, "Genre");
                     boolean isColorMovie2 = decideColor();
                     controller.editMovie(chosenMovie, title2, director2, year2, minutes2, isColorMovie2, genre2);
+                    break;
 
                 default:
                     System.out.println("Invalid input!");
@@ -70,6 +108,7 @@ public class UserInterface {
     public void printWelcome() {
         System.out.println("1. Create book.");
         System.out.println("2. Exit.");
+        System.out.println("6. Marker en film som set");
     }
 
     public static String awaitInput(Scanner scanner, String text) {
