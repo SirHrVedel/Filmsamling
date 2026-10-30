@@ -80,10 +80,12 @@ public class UserInterface {
     public void printWelcome() {
         System.out.println("1. Create movie.");
         System.out.println("2. Delete movie.");
-        System.out.println("3. Exit.");
-        System.out.println("4. edit movie");
+        System.out.println("3. Edit a movie");
+        System.out.println("4. Mark movie as watched");
         System.out.println("5. loan movie");
-        System.out.println("help");
+
+        System.out.println("help - possible commands");
+        System.out.println("exit - end program");
     }
 
     public void loanOptions() {
@@ -92,9 +94,6 @@ public class UserInterface {
         System.out.println("due");
         System.out.println("fine");
 
-        System.out.println("1. Create book.");
-        System.out.println("2. Exit.");
-        System.out.println("6. Marker en film som set");
     }
 
     public static String awaitInput(Scanner scanner, String text) {
