@@ -42,7 +42,7 @@ public class UserInterface {
                 case ("3"):
                     System.out.println("Goodbye");
                     return;
-                case ("3"):
+                case ("4"):
                     ArrayList<Movie> movies = controller.getMovies();
                     int count = 0;
                     for (Movie movie : movies) {
@@ -59,7 +59,7 @@ public class UserInterface {
                     String genre2 = awaitInput(scanner, "Genre");
                     boolean isColorMovie2 = decideColor();
                     controller.editMovie(chosenMovie, title2, director2, year2, minutes2, isColorMovie2, genre2);
-                    break;
+
 
                     title = awaitInput(scanner, "Movie title");
                     director = awaitInput(scanner, "director");
@@ -68,8 +68,8 @@ public class UserInterface {
                     genre = awaitInput(scanner, "Genre");
                     isColorMovie = decideColor();
                     controller.editMovie(chosenMovie, title, director, year, minutes, isColorMovie, genre);
-
-                case ("4"):
+                    break;
+                case ("5"):
                     //Todo, gør så der kan printes en liste af de lånte bøger og ret så
                     // at man ikke skal vælge loan option og bog på ny når man ville returnere
                     // eller en anden option
@@ -130,9 +130,10 @@ public class UserInterface {
 
     public void printWelcome() {
         System.out.println("1. Create movie.");
-        System.out.println("2. Exit.");
-        System.out.println("3. edit movie");
-        System.out.println("4. loan movie");
+        System.out.println("2. Delete movie.");
+        System.out.println("3. Exit.");
+        System.out.println("4. edit movie");
+        System.out.println("5. loan movie");
         System.out.println("help");
     }
 
@@ -142,9 +143,6 @@ public class UserInterface {
         System.out.println("due");
         System.out.println("fine");
 
-        System.out.println("1. Create movie.");
-        System.out.println("2. Delete movie.");
-        System.out.println("3. Exit.");
     }
 
     public static String awaitInput(Scanner scanner, String text) {
@@ -200,6 +198,7 @@ public class UserInterface {
                 i++;
                 System.out.println(i + ". " + movie.getTitle() + ", " + movie.getInstructor() + ", " + movie.getYear());
             }
+
             while (true){
                 int inputInt = awaitInputInt(scanner, "Input the number of he movie to be removed:");
                 if (inputInt > movies.size() || inputInt <= 0){
