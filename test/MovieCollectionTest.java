@@ -9,14 +9,14 @@ class MovieCollectionTest {
     @Test
     void addMovie() {
         MovieCollection movieCollection = new MovieCollection();
-        movieCollection.addMovie("test", "test", 1000, 120, true, "testGenre");
+        movieCollection.addMovie("test", "test", 2000, 120, true, "testGenre");
         assertEquals(1, movieCollection.getNumberOfMovies());
 
         // test values are correct.
         Movie actual = movieCollection.getMovies().getFirst();
         assertEquals("test", actual.getTitle());
         assertEquals("test", actual.getInstructor());
-        assertEquals(1000, actual.getYear());
+        assertEquals(2000, actual.getYear());
         assertEquals(120, actual.getMinutes());
         assertTrue(actual.getIsColor());
         assertEquals("testGenre", actual.getGenre());
@@ -26,16 +26,16 @@ class MovieCollectionTest {
     @Test
     void addMultipleMovies(){
         MovieCollection movieCollection = new MovieCollection();
-        movieCollection.addMovie("test", "test", 1000, 120, true, "testGenre");
-        movieCollection.addMovie("test2", "test", 1000, 120, true, "testGenre");
-        movieCollection.addMovie("test3", "test", 1000, 120, true, "testGenre");
+        movieCollection.addMovie("test", "test", 2000, 120, true, "testGenre");
+        movieCollection.addMovie("test2", "test", 2000, 120, true, "testGenre");
+        movieCollection.addMovie("test3", "test", 2000, 120, true, "testGenre");
         assertEquals(3, movieCollection.getNumberOfMovies());
     }
 
     @Test
     void deleteMovie() {
         MovieCollection movieCollection = new MovieCollection();
-        movieCollection.addMovie("test", "test", 1000, 120, true, "testGenre");
+        movieCollection.addMovie("test", "test", 2000, 120, true, "testGenre");
         ArrayList<Movie> movieList = movieCollection.getMovies();
         assertTrue(movieCollection.deleteMovie(movieList.getFirst()));
     }
@@ -43,9 +43,8 @@ class MovieCollectionTest {
     @Test
     void deleteMovieThatDoesntExist(){
         MovieCollection movieCollection = new MovieCollection();
-        Movie fakeMovie = new Movie("test3", "test", 1000, 120, true, "testGenre");
-        movieCollection.addMovie("test", "test", 1000, 120, true, "testGenre");
-        ArrayList<Movie> movieList = movieCollection.getMovies();
+        Movie fakeMovie = new Movie("test3", "test", 2000, 120, true, "testGenre");
+        movieCollection.addMovie("test", "test", 2000, 120, true, "testGenre");
         assertFalse(movieCollection.deleteMovie(fakeMovie));
     }
 
@@ -63,8 +62,8 @@ class MovieCollectionTest {
         assertEquals(0, movieCollection.getNumberOfMovies());
         MovieCollection movieCollection1 = new MovieCollection();
 
-        movieCollection1.addMovie("test", "test", 1000, 120, true, "testGenre");
-        movieCollection1.addMovie("test2", "test2", 1001, 121, false, "testGenre2");
+        movieCollection1.addMovie("test", "test", 2000, 120, true, "testGenre");
+        movieCollection1.addMovie("test2", "test2", 2001, 121, false, "testGenre2");
         assertEquals(2, movieCollection1.getNumberOfMovies());
 
     }
@@ -74,7 +73,7 @@ class MovieCollectionTest {
     @Test
     void searchMoviesFindOneMovie() {
         MovieCollection movieCollection = new MovieCollection();
-        movieCollection.addMovie("help", "help", 300, 3000, true, "action");
+        movieCollection.addMovie("help", "help", 2000, 3000, true, "action");
         movieCollection.addMovie("ski", "ski", 2000, 3000, true, "horror");
         movieCollection.addMovie("sommer", "jens", 2000, 200, true, "romantic");
         assertEquals(1, movieCollection.searchMovies("help").size());
@@ -83,9 +82,9 @@ class MovieCollectionTest {
     @Test
     void searchMoviesFindMore() {
         MovieCollection movieCollection = new MovieCollection();
-        movieCollection.addMovie("shush", "lykke", 4000, 40, true, "horror");
-        movieCollection.addMovie("shush1", "ole", 2000, 100, true, "romantic");
-        movieCollection.addMovie("lost", "peter", 1000, 50, true, "action");
+        movieCollection.addMovie("shush", "lykke", 2000, 40, true, "horror");
+        movieCollection.addMovie("shush1", "ole", 2010, 100, true, "romantic");
+        movieCollection.addMovie("lost", "peter", 2020, 50, true, "action");
         assertEquals(2, movieCollection.searchMovies("Shush").size());
 
     }
