@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.NoSuchElementException;
 import java.util.Scanner;
 import java.time.LocalDate;
 
@@ -8,109 +9,50 @@ public class UserInterface {
 
     public void startProgram() {
         printWelcome();
-        while (true) {
-            String title;
-            String director;
-            int year;
-            int minutes;
-            String genre;
-            boolean isColorMovie;
-            String input = awaitInput(scanner, "");
+        try {
+            while (true) {
+                String input = awaitInput(scanner, "");
 
-            switch (input.toLowerCase()) {
-                case ("1"):
-                    title = awaitInput(scanner, "Movie title");
-                    director = awaitInput(scanner, "director");
-                    year = awaitInputInt(scanner, "Year");
-                    minutes = awaitInputInt(scanner, "Minutes");
-                    genre = awaitInput(scanner, "Genre");
-                    isColorMovie = decideColor();
-                    try {
-                        controller.addMovie(title, director, year, minutes, isColorMovie, genre);
-                    } catch (IllegalArgumentException e) {
-                        System.out.println("The movie couldn't be created: " + e.getMessage());
-                    } catch (Exception e){
-                        System.out.println("An error occurred.");
-                    }
-
-                    System.out.println("the movie '" + title + "' was added to the collection!");
-                    break;
-                case ("2"):
-                    // delete movie
-                    deleteMovie();
-                    break;
-                case ("3"):
-                    System.out.println("Goodbye");
-                    return;
-                case ("4"):
-                    ArrayList<Movie> movies = controller.getMovies();
-                    int count = 0;
-                    for (Movie movie : movies) {
-                        count++;
-                        System.out.println(count + " " + movie.getTitle());
-
-                    }
-                    int chosen = awaitInputInt(scanner, "which movie would you like to edit");
-                    Movie chosenMovie = movies.get(chosen - 1);
-                    String title2 = awaitInput(scanner, "Movie title");
-                    String director2 = awaitInput(scanner, "director");
-                    int year2 = awaitInputInt(scanner, "Year");
-                    int minutes2 = awaitInputInt(scanner, "Minutes");
-                    String genre2 = awaitInput(scanner, "Genre");
-                    boolean isColorMovie2 = decideColor();
-                    controller.editMovie(chosenMovie, title2, director2, year2, minutes2, isColorMovie2, genre2);
-
-
-                    title = awaitInput(scanner, "Movie title");
-                    director = awaitInput(scanner, "director");
-                    year = awaitInputInt(scanner, "Year");
-                    minutes = awaitInputInt(scanner, "Minutes");
-                    genre = awaitInput(scanner, "Genre");
-                    isColorMovie = decideColor();
-                    controller.editMovie(chosenMovie, title, director, year, minutes, isColorMovie, genre);
-                    break;
-                case ("5"):
-                    //Todo, gør så der kan printes en liste af de lånte bøger og ret så
-                    // at man ikke skal vælge loan option og bog på ny når man ville returnere
-                    // eller en anden option
-
-                    loanOptions();
-                    Movie loanMovie = chooseMovie("which movie?");
-                    System.out.println("What action do you want to do?");
-                    String action = awaitInput(scanner, "loan / return / due / fine");
-                    LocalDate today = LocalDate.now();
-                    switch (action.toLowerCase()){
-                        case "loan" -> {
-                            loanMovie.loanOut(today);
-                            System.out.println("Loaned out. Due: " + loanMovie.getLoan().getDueDate());
+                switch (input.toLowerCase()) {
+                    case ("1"):
+                        try {
+                            addMovie();
+                            break;
+                        } catch (IllegalArgumentException e) {
+                            System.out.println("An error occurred while adding the movie. " + e.getMessage());
+                        } catch (Exception e) {
+                            System.out.println("An error occurred.");
                         }
-                        case "return" -> {
-                            loanMovie.returnMovie();
-                            System.out.println("Movie returned");
+                        break;
+                    case ("2"):
+                        // delete movie
+                        try {
+                            deleteMovie();
+                        } catch (Exception e) {
+                            System.out.println("An error occurred. " + e.getMessage());
                         }
-                        case "due" -> {
-                            if (loanMovie.isLoaned()){
-                                System.out.println("Due date: " + loanMovie.getLoan().getDueDate());
-                            }else{
-                                System.out.println("There is no loan for this movie");}
+
+                        break;
+                    case ("3"):
+                        System.out.println("Goodbye");
+                        return;
+                    case ("help"):
+                        printWelcome();
+                        break;
+                    case ("edit movie"):
+                        try {
+                            editMovie();
+                        } catch (Exception e) {
+                            System.out.println("An error occurred  " + e.getMessage());
                         }
-                        case "fine" -> {
-                            if (loanMovie.isLoaned()){
-                                System.out.println("Fine: " + loanMovie.getLoan().getFine(today) + " Kr.");
-                            } else {
-                                System.out.println("There is no fine");
-                            }
-                        }
-                        default -> System.out.println("Invalid loan action!");
-                    }
-                    break;
-                case ("help"):
-                    printWelcome();
-                    break;
-                default:
-                    System.out.println("Invalid input!");
-                    break;
+                        break;
+                    default:
+                        System.out.println("Invalid input!");
+                }
             }
+        } catch (NoSuchElementException e){
+            System.out.println();
+            System.out.println("Input closed. Goodbye");
         }
     }
 
@@ -164,10 +106,19 @@ public class UserInterface {
                 return Integer.parseInt(awaitInput(scanner, text).trim());
             } catch (NumberFormatException e) {
                 System.out.println("That is not a whole number!");
-            } catch (Exception e){
-                System.out.println("An error occurred.");
             }
         }
+    }
+
+    private void addMovie() {
+        String title = awaitInput(scanner, "Movie title");
+        String director = awaitInput(scanner, "director");
+        int year = awaitInputInt(scanner, "Year");
+        int minutes = awaitInputInt(scanner, "Minutes");
+        String genre = awaitInput(scanner, "Genre");
+        boolean isColorMovie = decideColor();
+        controller.addMovie(title, director, year, minutes, isColorMovie, genre);
+        System.out.println("the movie '" + title + "' was added to the collection!");
     }
 
     private Movie chooseMovie(String prompt) {
@@ -179,7 +130,7 @@ public class UserInterface {
         return movies.get(chosen - 1);
     }
 
-    private void deleteMovie(){
+    private void deleteMovie() {
         String inputString = awaitInput(scanner, "What is the name of the movie you want to remove?");
         String movieTitle;
         ArrayList<Movie> movies = controller.searchMovies(inputString);
@@ -194,22 +145,60 @@ public class UserInterface {
             System.out.println("Multiple movies of the name: '" + inputString + "' was found.");
             System.out.println("Which one should be removed?");
             int i = 0;
-            for (Movie movie : movies){
+            for (Movie movie : movies) {
                 i++;
                 System.out.println(i + ". " + movie.getTitle() + ", " + movie.getInstructor() + ", " + movie.getYear());
             }
-
-            while (true){
+            while (true) {
                 int inputInt = awaitInputInt(scanner, "Input the number of he movie to be removed:");
-                if (inputInt > movies.size() || inputInt <= 0){
+                if (inputInt > movies.size() || inputInt <= 0) {
                     System.out.println("That is not a valid decision");
                 } else {
                     Movie chosenMovie = movies.get(inputInt - 1);
-                    controller.deleteMovie(chosenMovie);
+                    boolean result = controller.deleteMovie(chosenMovie);
+                    if (result){
+                        System.out.println("The movie '" + chosenMovie.getTitle() +  "' was deleted");
+                    } else System.out.println("The movie couldn't be deleted.");
                     return;
                 }
             }
 
+        }
+    }
+
+    private void editMovie() {
+        ArrayList<Movie> movies = controller.getMovies();
+        int count = 0;
+        if (movies.isEmpty()){
+            System.out.println("No movies to edit.");
+            return;
+        }
+
+        for (Movie movie : movies) {
+            count++;
+            System.out.println(count + ". " + movie.getTitle());
+
+        }
+
+        while (true){
+            int chosen = awaitInputInt(scanner, "Which movie would you like to edit?");
+
+            if (chosen > movies.size() || chosen <= 0){
+                System.out.println("That is not a valid decision");
+            } else {
+                Movie chosenMovie = movies.get(chosen - 1);
+                String title = awaitInput(scanner, "Movie title");
+                String director = awaitInput(scanner, "director");
+                int year = awaitInputInt(scanner, "Year");
+                int minutes = awaitInputInt(scanner, "Minutes");
+                String genre = awaitInput(scanner, "Genre");
+                boolean isColorMovie = decideColor();
+                boolean result = controller.editMovie(chosenMovie, title, director, year, minutes, isColorMovie, genre);
+                if (result) {
+                    System.out.println("The movie was edited with success");
+                } else System.out.println("The movie wasn't edited due to an error");
+                return;
+            }
         }
     }
 
