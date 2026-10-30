@@ -10,6 +10,29 @@ public class UserInterface {
     private Scanner scanner = new Scanner(System.in);
     private Controller controller = new Controller();
 
+    public static String awaitInput(Scanner scanner, String text) {
+        // Await player input
+        System.out.println();
+        // don't write the message line if an empty string is provided
+        if (!text.isEmpty()) {
+            System.out.println(text);
+        }
+        System.out.print("> ");
+        return scanner.nextLine();
+    }
+
+    public static int awaitInputInt(Scanner scanner, String text) {
+        // Keep asking until the player enters a valid integer
+        while (true) {
+            try {
+                // reuse await input and parse it to an integer. Reprompts if the input isn't an integer.
+                return Integer.parseInt(awaitInput(scanner, text).trim());
+            } catch (NumberFormatException e) {
+                System.out.println("That is not a whole number!");
+            }
+        }
+    }
+
     public void startProgram() {
         printWelcome();
         try {
@@ -57,7 +80,7 @@ public class UserInterface {
                         System.out.println("Invalid input!");
                 }
             }
-        } catch (NoSuchElementException e){
+        } catch (NoSuchElementException e) {
             System.out.println();
             System.out.println("Input closed. Goodbye");
         }
@@ -94,29 +117,6 @@ public class UserInterface {
         System.out.println("due");
         System.out.println("fine");
 
-    }
-
-    public static String awaitInput(Scanner scanner, String text) {
-        // Await player input
-        System.out.println();
-        // don't write the message line if an empty string is provided
-        if (!text.isEmpty()) {
-            System.out.println(text);
-        }
-        System.out.print("> ");
-        return scanner.nextLine();
-    }
-
-    public static int awaitInputInt(Scanner scanner, String text) {
-        // Keep asking until the player enters a valid integer
-        while (true) {
-            try {
-                // reuse await input and parse it to an integer. Reprompts if the input isn't an integer.
-                return Integer.parseInt(awaitInput(scanner, text).trim());
-            } catch (NumberFormatException e) {
-                System.out.println("That is not a whole number!");
-            }
-        }
     }
 
     private void addMovie() {
@@ -165,8 +165,8 @@ public class UserInterface {
                 } else {
                     Movie chosenMovie = movies.get(inputInt - 1);
                     boolean result = controller.deleteMovie(chosenMovie);
-                    if (result){
-                        System.out.println("The movie '" + chosenMovie.getTitle() +  "' was deleted");
+                    if (result) {
+                        System.out.println("The movie '" + chosenMovie.getTitle() + "' was deleted");
                     } else System.out.println("The movie couldn't be deleted.");
                     return;
                 }
@@ -178,7 +178,7 @@ public class UserInterface {
     private void editMovie() {
         ArrayList<Movie> movies = controller.getMovies();
         int count = 0;
-        if (movies.isEmpty()){
+        if (movies.isEmpty()) {
             System.out.println("No movies to edit.");
             return;
         }
@@ -189,10 +189,10 @@ public class UserInterface {
 
         }
 
-        while (true){
+        while (true) {
             int chosen = awaitInputInt(scanner, "Which movie would you like to edit?");
 
-            if (chosen > movies.size() || chosen <= 0){
+            if (chosen > movies.size() || chosen <= 0) {
                 System.out.println("That is not a valid decision");
             } else {
                 Movie chosenMovie = movies.get(chosen - 1);
@@ -211,17 +211,27 @@ public class UserInterface {
         }
     }
 
-    public void markMovieAsWatched(){
+    public void markMovieAsWatched() {
+
         ArrayList<Movie> moviesNow = controller.getMovies();
+        if (moviesNow.isEmpty()) {
+            System.out.println("The are no movies to mark as watched");
+            return;
+        }
         int number = 0;
         for (Movie movies : moviesNow) {
             number++;
             System.out.println(number + " " + movies.getTitle());
         }
         int seen = awaitInputInt(scanner, "which movie would you like to mark as seen");
+        if(seen >= moviesNow.size()){
+            System.out.println("that is not a valid choice");
+            return;
+        }
         Movie chosenMovie = moviesNow.get(seen - 1);
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
         LocalDate date;
+
         while (true) {
             String dateInput = awaitInput(scanner, "dd-MM-yyyy");
             if (dateInput.isEmpty()) {
@@ -236,14 +246,14 @@ public class UserInterface {
                 }
 
             }
-            if(date.isAfter(LocalDate.now())) {
+            if (date.isAfter(LocalDate.now())) {
                 System.out.println("the date is in the future");
-            }
-            else {
+            } else {
                 controller.markAsWatched(chosenMovie, date);
             }
             break;
         }
     }
-
 }
+
+
