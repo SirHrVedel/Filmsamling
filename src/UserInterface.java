@@ -37,54 +37,33 @@ public class UserInterface {
         printWelcome();
         try {
             while (true) {
-                String input = awaitInput(scanner, "");
-
-                switch (input.toLowerCase()) {
-                    case ("1"):
-                        try {
-                            addMovie();
-                            break;
-                        } catch (IllegalArgumentException e) {
-                            System.out.println("An error occurred while adding the movie. " + e.getMessage());
-                        } catch (Exception e) {
-                            System.out.println("An error occurred.");
+                try {
+                    String input = awaitInput(scanner, "").toLowerCase();
+                    switch (input) {
+                        case ("1") -> addMovie();
+                        case ("2") -> deleteMovie();
+                        case ("3") -> editMovie();
+                        case ("4") -> markMovieAsWatched();
+                        case ("5") -> makeLoan();
+                        case ("help") -> printWelcome();
+                        case ("exit") -> {
+                            System.out.println("Goodbye");
+                            return;
                         }
-                        break;
-                    case ("2"):
-                        // delete movie
-                        try {
-                            deleteMovie();
-                        } catch (Exception e) {
-                            System.out.println("An error occurred. " + e.getMessage());
-                        }
-
-                        break;
-                    case ("3"):
-                        try {
-                            editMovie();
-                        } catch (Exception e) {
-                            System.out.println("An error occurred  " + e.getMessage());
-                        }
-                        break;
-                    case ("4"): {
-                        markMovieAsWatched();
-                        break;
+                        default -> System.out.println("Unknown command: " + input + ".");
                     }
-                    case ("help"):
-                        printWelcome();
-                        break;
-                    case ("exit"):
-                        System.out.println("Goodbye");
-                        return;
-                    default:
-                        System.out.println("Invalid input!");
+                } catch (IllegalArgumentException e) {
+                    System.out.println("An error occurred: " + e.getMessage());
                 }
             }
         } catch (NoSuchElementException e) {
             System.out.println();
-            System.out.println("Input closed. Goodbye");
+            System.out.println("Input closed. Goodbye!");
+        } catch (Exception e) {
+            System.out.println("An error occurred. " + e.getMessage());
         }
     }
+
 
     private boolean decideColor() {
         while (true) {
@@ -212,7 +191,6 @@ public class UserInterface {
     }
 
     public void markMovieAsWatched() {
-
         ArrayList<Movie> moviesNow = controller.getMovies();
         if (moviesNow.isEmpty()) {
             System.out.println("The are no movies to mark as watched");
@@ -252,6 +230,43 @@ public class UserInterface {
                 controller.markAsWatched(chosenMovie, date);
             }
             break;
+        }
+    }
+
+    public void makeLoan() {
+        //Todo, gør så der kan printes en liste af de lånte bøger og ret så
+        // at man ikke skal vælge loan option og bog på ny når man ville returnere
+        // eller en anden option
+
+        loanOptions();
+        Movie loanMovie = chooseMovie("which movie?");
+        System.out.println("What action do you want to do?");
+        String action = awaitInput(scanner, "loan / return / due / fine");
+        LocalDate today = LocalDate.now();
+        switch (action.toLowerCase()) {
+            case "loan" -> {
+                loanMovie.loanOut(today);
+                System.out.println("Loaned out. Due: " + loanMovie.getLoan().getDueDate());
+            }
+            case "return" -> {
+                loanMovie.returnMovie();
+                System.out.println("Movie returned");
+            }
+            case "due" -> {
+                if (loanMovie.isLoaned()) {
+                    System.out.println("Due date: " + loanMovie.getLoan().getDueDate());
+                } else {
+                    System.out.println("There is no loan for this movie");
+                }
+            }
+            case "fine" -> {
+                if (loanMovie.isLoaned()) {
+                    System.out.println("Fine: " + loanMovie.getLoan().getFine(today) + " Kr.");
+                } else {
+                    System.out.println("There is no fine");
+                }
+            }
+            default -> System.out.println("Invalid loan action!");
         }
     }
 }
