@@ -14,57 +14,33 @@ public class UserInterface {
         printWelcome();
         try {
             while (true) {
-                String input = awaitInput(scanner, "");
-
-                switch (input.toLowerCase()) {
-                    case ("1"):
-                        try {
-                            addMovie();
-                            break;
-                        } catch (IllegalArgumentException e) {
-                            System.out.println("An error occurred while adding the movie. " + e.getMessage());
-                        } catch (Exception e) {
-                            System.out.println("An error occurred.");
+                try {
+                    String input = awaitInput(scanner, "").toLowerCase();
+                    switch (input) {
+                        case ("1") -> addMovie();
+                        case ("2") -> deleteMovie();
+                        case ("3") -> editMovie();
+                        case ("4") -> markMovieAsWatched();
+                        case ("5") -> makeLoan();
+                        case ("help") -> printWelcome();
+                        case ("exit") -> {
+                            System.out.println("Goodbye");
+                            return;
                         }
-                        break;
-                    case ("2"):
-                        // delete movie
-                        try {
-                            deleteMovie();
-                        } catch (Exception e) {
-                            System.out.println("An error occurred. " + e.getMessage());
-                        }
-
-                        break;
-                    case ("3"):
-                        try {
-                            editMovie();
-                        } catch (Exception e) {
-                            System.out.println("An error occurred  " + e.getMessage());
-                        }
-                        break;
-                    case ("4"): {
-                        markMovieAsWatched();
-                        break;
+                        default -> System.out.println("Unknown command: " + input + ".");
                     }
-                    case ("5"):
-                        makeLoan();
-                        break;
-                    case ("help"):
-                        printWelcome();
-                        break;
-                    case ("exit"):
-                        System.out.println("Goodbye");
-                        return;
-                    default:
-                        System.out.println("Invalid input!");
+                } catch (IllegalArgumentException e) {
+                    System.out.println("An error occurred: " + e.getMessage());
                 }
             }
         } catch (NoSuchElementException e) {
             System.out.println();
-            System.out.println("Input closed. Goodbye");
+            System.out.println("Input closed. Goodbye!");
+        } catch (Exception e) {
+            System.out.println("An error occurred. " + e.getMessage());
         }
     }
+
 
     private boolean decideColor() {
         while (true) {
