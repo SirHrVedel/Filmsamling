@@ -1,6 +1,9 @@
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
+import java.time.format.DateTimeParseException;
 import java.time.LocalDate;
 
 public class UserInterface {
@@ -85,6 +88,9 @@ public class UserInterface {
         System.out.println("due");
         System.out.println("fine");
 
+        System.out.println("1. Create book.");
+        System.out.println("2. Exit.");
+        System.out.println("6. Marker en film som set");
     }
 
     public static String awaitInput(Scanner scanner, String text) {
