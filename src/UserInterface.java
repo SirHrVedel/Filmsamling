@@ -37,18 +37,22 @@ public class UserInterface {
 
                         break;
                     case ("3"):
-                        System.out.println("Goodbye");
-                        return;
-                    case ("help"):
-                        printWelcome();
-                        break;
-                    case ("edit movie"):
                         try {
                             editMovie();
                         } catch (Exception e) {
                             System.out.println("An error occurred  " + e.getMessage());
                         }
                         break;
+                    case ("4"): {
+                        markMovieAsWatched();
+                        break;
+                    }
+                    case ("help"):
+                        printWelcome();
+                        break;
+                    case ("exit"):
+                        System.out.println("Goodbye");
+                        return;
                     default:
                         System.out.println("Invalid input!");
                 }
@@ -205,6 +209,41 @@ public class UserInterface {
                 } else System.out.println("The movie wasn't edited due to an error");
                 return;
             }
+        }
+    }
+
+    public void markMovieAsWatched(){
+        ArrayList<Movie> moviesNow = controller.getMovies();
+        int number = 0;
+        for (Movie movies : moviesNow) {
+            number++;
+            System.out.println(number + " " + movies.getTitle());
+        }
+        int seen = awaitInputInt(scanner, "which movie would you like to mark as seen");
+        Movie chosenMovie = moviesNow.get(seen - 1);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+        LocalDate date;
+        while (true) {
+            String dateInput = awaitInput(scanner, "dd-MM-yyyy");
+            if (dateInput.isEmpty()) {
+                date = LocalDate.now();
+
+            } else {
+                try {
+                    date = LocalDate.parse(dateInput, formatter);
+                } catch (DateTimeParseException c) {
+                    System.out.println("date is not valid");
+                    continue;
+                }
+
+            }
+            if(date.isAfter(LocalDate.now())) {
+                System.out.println("the date is in the future");
+            }
+            else {
+                controller.markAsWatched(chosenMovie, date);
+            }
+            break;
         }
     }
 
