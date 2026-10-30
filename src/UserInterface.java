@@ -47,6 +47,9 @@ public class UserInterface {
                         markMovieAsWatched();
                         break;
                     }
+                    case ("5"):
+                        makeLoan();
+                        break;
                     case ("help"):
                         printWelcome();
                         break;
@@ -57,7 +60,7 @@ public class UserInterface {
                         System.out.println("Invalid input!");
                 }
             }
-        } catch (NoSuchElementException e){
+        } catch (NoSuchElementException e) {
             System.out.println();
             System.out.println("Input closed. Goodbye");
         }
@@ -165,8 +168,8 @@ public class UserInterface {
                 } else {
                     Movie chosenMovie = movies.get(inputInt - 1);
                     boolean result = controller.deleteMovie(chosenMovie);
-                    if (result){
-                        System.out.println("The movie '" + chosenMovie.getTitle() +  "' was deleted");
+                    if (result) {
+                        System.out.println("The movie '" + chosenMovie.getTitle() + "' was deleted");
                     } else System.out.println("The movie couldn't be deleted.");
                     return;
                 }
@@ -178,7 +181,7 @@ public class UserInterface {
     private void editMovie() {
         ArrayList<Movie> movies = controller.getMovies();
         int count = 0;
-        if (movies.isEmpty()){
+        if (movies.isEmpty()) {
             System.out.println("No movies to edit.");
             return;
         }
@@ -189,10 +192,10 @@ public class UserInterface {
 
         }
 
-        while (true){
+        while (true) {
             int chosen = awaitInputInt(scanner, "Which movie would you like to edit?");
 
-            if (chosen > movies.size() || chosen <= 0){
+            if (chosen > movies.size() || chosen <= 0) {
                 System.out.println("That is not a valid decision");
             } else {
                 Movie chosenMovie = movies.get(chosen - 1);
@@ -211,7 +214,7 @@ public class UserInterface {
         }
     }
 
-    public void markMovieAsWatched(){
+    public void markMovieAsWatched() {
         ArrayList<Movie> moviesNow = controller.getMovies();
         int number = 0;
         for (Movie movies : moviesNow) {
@@ -236,14 +239,49 @@ public class UserInterface {
                 }
 
             }
-            if(date.isAfter(LocalDate.now())) {
+            if (date.isAfter(LocalDate.now())) {
                 System.out.println("the date is in the future");
-            }
-            else {
+            } else {
                 controller.markAsWatched(chosenMovie, date);
             }
             break;
         }
     }
 
+    public void makeLoan() {
+        //Todo, gør så der kan printes en liste af de lånte bøger og ret så
+        // at man ikke skal vælge loan option og bog på ny når man ville returnere
+        // eller en anden option
+
+        loanOptions();
+        Movie loanMovie = chooseMovie("which movie?");
+        System.out.println("What action do you want to do?");
+        String action = awaitInput(scanner, "loan / return / due / fine");
+        LocalDate today = LocalDate.now();
+        switch (action.toLowerCase()) {
+            case "loan" -> {
+                loanMovie.loanOut(today);
+                System.out.println("Loaned out. Due: " + loanMovie.getLoan().getDueDate());
+            }
+            case "return" -> {
+                loanMovie.returnMovie();
+                System.out.println("Movie returned");
+            }
+            case "due" -> {
+                if (loanMovie.isLoaned()) {
+                    System.out.println("Due date: " + loanMovie.getLoan().getDueDate());
+                } else {
+                    System.out.println("There is no loan for this movie");
+                }
+            }
+            case "fine" -> {
+                if (loanMovie.isLoaned()) {
+                    System.out.println("Fine: " + loanMovie.getLoan().getFine(today) + " Kr.");
+                } else {
+                    System.out.println("There is no fine");
+                }
+            }
+            default -> System.out.println("Invalid loan action!");
+        }
+    }
 }
