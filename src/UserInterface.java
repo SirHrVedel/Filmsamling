@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 import java.time.format.DateTimeParseException;
+import java.time.LocalDate;
 
 public class UserInterface {
     private Scanner scanner = new Scanner(System.in);
@@ -28,7 +29,7 @@ public class UserInterface {
                         case ("5") -> makeLoan();
                         case ("help") -> printWelcome();
                         case ("exit") -> {
-                            exitMsg();
+                            System.out.println("Goodbye");
                             return;
                         }
                         default -> System.out.println("Unknown command: " + input + ".");
@@ -40,7 +41,6 @@ public class UserInterface {
         } catch (NoSuchElementException e) {
             System.out.println();
             System.out.println("Input closed. Goodbye!");
-            controller.saveMoviesIfChanged();
         } catch (Exception e) {
             System.out.println("An error occurred. " + e.getMessage());
         }
@@ -197,12 +197,20 @@ public class UserInterface {
 
     public void markMovieAsWatched() {
         ArrayList<Movie> moviesNow = controller.getMovies();
+        if (moviesNow.isEmpty()) {
+            System.out.println("The are no movies to mark as watched");
+            return;
+        }
         int number = 0;
         for (Movie movies : moviesNow) {
             number++;
             System.out.println(number + " " + movies.getTitle());
         }
         int seen = awaitInputInt(scanner, "which movie would you like to mark as seen");
+        if(seen >= moviesNow.size()){
+            System.out.println("that is not a valid choice");
+            return;
+        }
         Movie chosenMovie = moviesNow.get(seen - 1);
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
         LocalDate date;
