@@ -1,16 +1,20 @@
+import java.io.FileNotFoundException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 import java.time.format.DateTimeParseException;
-import java.time.LocalDate;
 
 public class UserInterface {
     private Scanner scanner = new Scanner(System.in);
     private Controller controller = new Controller();
 
-    public void startProgram() {
+    public UserInterface() throws FileNotFoundException {
+    }
+
+    public void startProgram() throws FileNotFoundException {
+        loadMovies();
         printWelcome();
         try {
             while (true) {
@@ -24,7 +28,7 @@ public class UserInterface {
                         case ("5") -> makeLoan();
                         case ("help") -> printWelcome();
                         case ("exit") -> {
-                            System.out.println("Goodbye");
+                            exitMsg();
                             return;
                         }
                         default -> System.out.println("Unknown command: " + input + ".");
@@ -36,6 +40,7 @@ public class UserInterface {
         } catch (NoSuchElementException e) {
             System.out.println();
             System.out.println("Input closed. Goodbye!");
+            controller.saveMoviesIfChanged();
         } catch (Exception e) {
             System.out.println("An error occurred. " + e.getMessage());
         }
@@ -259,5 +264,27 @@ public class UserInterface {
             }
             default -> System.out.println("Invalid loan action!");
         }
+    }
+
+    private void loadMovies() {
+        try {
+            int count = controller.loadMovies();
+            System.out.println(count + " movies are loaded.");
+            int skipped = controller.getSkippedLineCount();
+            if (skipped > 0) {
+                System.out.println("Warning: " + skipped + " line(s) could not be read, and was skipped.");
+            }
+        } catch (FileNotFoundException e) {
+            System.out.println("There's no saved movie collection yet, you begin with an empty collection");
+        }
+    }
+
+    private void exitMsg() throws FileNotFoundException {
+        boolean saveResult = controller.saveMoviesIfChanged();
+        if (saveResult){
+            System.out.println("Saved movies to file");
+        } else System.out.println("No changes was made, save not needed.");
+        System.out.println("Goodbye!");
+
     }
 }

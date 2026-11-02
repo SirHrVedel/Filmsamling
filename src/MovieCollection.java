@@ -13,6 +13,11 @@ public class MovieCollection {
         movies.add(movie);
     }
 
+    // Bruges, når filmene allerede er oprettet – fx når de indlæses fra en fil
+    public void addMovie(Movie movie) {
+        movies.add(movie);
+    }
+
     public ArrayList<Movie> getMovies() {
         return movies;
     }
