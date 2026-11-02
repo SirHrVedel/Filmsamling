@@ -12,15 +12,16 @@ public class UserInterface {
 
     public void startProgram() {
         loadMovies();
-        printWelcome();
         try {
             while (true) {
                 try {
+                    // beginning of loop
+                    printWelcome();
                     String input = awaitInput(scanner, "").toLowerCase();
                     switch (input) {
-                        case ("1") -> addMovie();
+                        case ("1") -> doMovieAction(1);
                         case ("2") -> deleteMovie();
-                        case ("3") -> editMovie();
+                        case ("3") -> doMovieAction(2);
                         case ("4") -> markMovieAsWatched();
                         case ("5") -> makeLoan();
                         case ("help") -> printWelcome();
@@ -37,7 +38,7 @@ public class UserInterface {
         } catch (NoSuchElementException e) {
             System.out.println();
             System.out.println("Input closed. Goodbye!");
-        } catch (Exception e) {
+        } catch (Exception e) { // all other error, cus why not
             System.out.println("An error occurred. " + e.getMessage());
         }
     }
@@ -45,7 +46,7 @@ public class UserInterface {
 
     private boolean decideColor() {
         while (true) {
-            String colorMovieDecide = awaitInput(scanner, "Is it a black and white movie?");
+            String colorMovieDecide = awaitInput(scanner, "Is it a black and white movie? (yes/no)");
             switch (colorMovieDecide.toLowerCase()) {
                 case "yes":
                     return false;
@@ -62,24 +63,22 @@ public class UserInterface {
         System.out.println("2. Delete movie.");
         System.out.println("3. Edit a movie");
         System.out.println("4. Mark movie as watched");
-        System.out.println("5. loan movie");
-
-        System.out.println("help - possible commands");
-        System.out.println("exit - end program");
+        System.out.println("5. Loan movie");
+        System.out.println("help - Possible commands");
+        System.out.println("exit - End program");
     }
 
     public void loanOptions() {
-        System.out.println("loan");
-        System.out.println("return");
-        System.out.println("due");
-        System.out.println("fine");
-
+        System.out.println("Loan");
+        System.out.println("Return");
+        System.out.println("Due");
+        System.out.println("Fine");
     }
 
     public static String awaitInput(Scanner scanner, String text) {
         // Await player input
         System.out.println();
-        // don't write the message line if an empty string is provided
+        // don't write the message line if an empty text string is provided
         if (!text.isEmpty()) {
             System.out.println(text);
         }
@@ -94,102 +93,48 @@ public class UserInterface {
                 // reuse await input and parse it to an integer. Reprompts if the input isn't an integer.
                 return Integer.parseInt(awaitInput(scanner, text).trim());
             } catch (NumberFormatException e) {
-                System.out.println("That is not a whole number!");
+                System.out.println("That is not a whole number! Enter a whole number ex: 1, 2, 3 or 4");
             }
         }
     }
 
-    private void addMovie() {
-        String title = awaitInput(scanner, "Movie title");
-        String director = awaitInput(scanner, "director");
-        int year = awaitInputInt(scanner, "Year");
-        int minutes = awaitInputInt(scanner, "Minutes");
-        String genre = awaitInput(scanner, "Genre");
-        boolean isColorMovie = decideColor();
-        controller.addMovie(title, director, year, minutes, isColorMovie, genre);
-        System.out.println("the movie '" + title + "' was added to the collection!");
-    }
-
-    private Movie chooseMovie(String prompt) {
+    private Movie chooseMovie(String actionMsg) {
         ArrayList<Movie> movies = controller.getMovies();
-        for (int i = 0; i < movies.size(); i++) {
-            System.out.println((i + 1) + " " + movies.get(i).getTitle());
+        if (!actionMsg.isEmpty()) {
+            System.out.println(actionMsg);
         }
-        int chosen = awaitInputInt(scanner, prompt);
-        return movies.get(chosen - 1);
+        for (int i = 0; i < movies.size(); i++) {
+            System.out.println((i + 1) + ". " + movies.get(i).getTitle());
+        }
+        while (true) {
+            int chosen = awaitInputInt(scanner, "Which movie?");
+            if (chosen < 1 || chosen > movies.size()) {
+                System.out.println("invalid decision!");
+            } else return movies.get(chosen - 1);
+        }
     }
 
     private void deleteMovie() {
+        if (controller.getMovies().isEmpty()) {
+            System.out.println("Theres no movies to delete.");
+            return;
+        }
         String inputString = awaitInput(scanner, "What is the name of the movie you want to remove?");
         String movieTitle;
         ArrayList<Movie> movies = controller.searchMovies(inputString);
 
         if (movies.isEmpty()) {
             System.out.println("No movies of that name was found");
-        } else if (movies.size() == 1) {
-            controller.deleteMovie(movies.getFirst());
-            movieTitle = movies.getFirst().getTitle();
-            System.out.println("The movie '" + movieTitle + "' was deleted");
         } else {
-            System.out.println("Multiple movies of the name: '" + inputString + "' was found.");
-            System.out.println("Which one should be removed?");
-            int i = 0;
-            for (Movie movie : movies) {
-                i++;
-                System.out.println(i + ". " + movie.getTitle() + ", " + movie.getInstructor() + ", " + movie.getYear());
-            }
-            while (true) {
-                int inputInt = awaitInputInt(scanner, "Input the number of he movie to be removed:");
-                if (inputInt > movies.size() || inputInt <= 0) {
-                    System.out.println("That is not a valid decision");
-                } else {
-                    Movie chosenMovie = movies.get(inputInt - 1);
-                    boolean result = controller.deleteMovie(chosenMovie);
-                    if (result) {
-                        System.out.println("The movie '" + chosenMovie.getTitle() + "' was deleted");
-                    } else System.out.println("The movie couldn't be deleted.");
-                    return;
-                }
-            }
+            Movie chosenMovie = chooseMovie("Which movie do you want to delete?");
+            boolean result = controller.deleteMovie(chosenMovie);
+            if (result) {
+                System.out.println("The movie '" + chosenMovie.getTitle() + "' was deleted");
+            } else System.out.println("The movie couldn't be deleted.");
 
         }
     }
 
-    private void editMovie() {
-        ArrayList<Movie> movies = controller.getMovies();
-        int count = 0;
-        if (movies.isEmpty()) {
-            System.out.println("No movies to edit.");
-            return;
-        }
-
-        for (Movie movie : movies) {
-            count++;
-            System.out.println(count + ". " + movie.getTitle());
-
-        }
-
-        while (true) {
-            int chosen = awaitInputInt(scanner, "Which movie would you like to edit?");
-
-            if (chosen > movies.size() || chosen <= 0) {
-                System.out.println("That is not a valid decision");
-            } else {
-                Movie chosenMovie = movies.get(chosen - 1);
-                String title = awaitInput(scanner, "Movie title");
-                String director = awaitInput(scanner, "director");
-                int year = awaitInputInt(scanner, "Year");
-                int minutes = awaitInputInt(scanner, "Minutes");
-                String genre = awaitInput(scanner, "Genre");
-                boolean isColorMovie = decideColor();
-                boolean result = controller.editMovie(chosenMovie, title, director, year, minutes, isColorMovie, genre);
-                if (result) {
-                    System.out.println("The movie was edited with success");
-                } else System.out.println("The movie wasn't edited due to an error");
-                return;
-            }
-        }
-    }
 
     public void markMovieAsWatched() {
         ArrayList<Movie> moviesNow = controller.getMovies();
@@ -197,17 +142,8 @@ public class UserInterface {
             System.out.println("The are no movies to mark as watched");
             return;
         }
-        int number = 0;
-        for (Movie movies : moviesNow) {
-            number++;
-            System.out.println(number + " " + movies.getTitle());
-        }
-        int seen = awaitInputInt(scanner, "which movie would you like to mark as seen");
-        if(seen >= moviesNow.size()){
-            System.out.println("that is not a valid choice");
-            return;
-        }
-        Movie chosenMovie = moviesNow.get(seen - 1);
+        ;
+        Movie chosenMovie = chooseMovie("Which movie do you want to mark as watched?");
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
         LocalDate date;
         while (true) {
@@ -239,7 +175,7 @@ public class UserInterface {
         // eller en anden option
 
         loanOptions();
-        Movie loanMovie = chooseMovie("which movie?");
+        Movie loanMovie = chooseMovie("Which movie do you want to loan?");
         System.out.println("What action do you want to do?");
         String action = awaitInput(scanner, "loan / return / due / fine");
         LocalDate today = LocalDate.now();
@@ -285,10 +221,124 @@ public class UserInterface {
 
     private void exitMsg() throws FileNotFoundException {
         boolean saveResult = controller.saveMoviesIfChanged();
-        if (saveResult){
+        if (saveResult) {
             System.out.println("Saved movies to file");
         } else System.out.println("No changes was made, save not needed.");
         System.out.println("Goodbye!");
+    }
 
+    /*
+        doMovieAction()
+        Supports creating and editing a movie. validates input on the fly and reprompts on invalid input at the current step.
+        action
+            1 = create movie
+            2 = edit movie
+     */
+    // spaghetti code lamo
+    public void doMovieAction(int action) {
+
+        // start prompting for which movie immediately when editing
+        Movie chosenMovie = null;
+        if (action == 2) {
+            ArrayList<Movie> movies = controller.getMovies();
+            if (movies.isEmpty()) {
+                System.out.println("No movies to edit.");
+                return;
+            } else chosenMovie = chooseMovie("Which movie do you want to edit?");
+        }
+
+        Movie validatorMovie = new Movie("test", "test", 1889, 1, true, "test");
+        String title;
+        String director;
+        int year;
+        int minutes;
+        String genre;
+        boolean isColorMovie;
+
+
+        // loops for each parameter (movie info) so we reprompt when the input is invalid
+
+        // title
+        while (true) {
+            try {
+                title = awaitInput(scanner, "Movie title");
+                validatorMovie.setTitle(title);
+                break;
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
+        }
+
+        // director
+        while (true) {
+            try {
+                director = awaitInput(scanner, "Director");
+                validatorMovie.setInstructor(director);
+                break;
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
+        }
+
+        // year
+        while (true) {
+            try {
+                year = awaitInputInt(scanner, "Year");
+                validatorMovie.setYear(year);
+
+                break;
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
+        }
+
+        // minutes
+        while (true) {
+            try {
+                minutes = awaitInputInt(scanner, "Minutes");
+                validatorMovie.setMinutes(minutes);
+                break;
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
+        }
+
+        // genre
+        while (true) {
+            try {
+                genre = awaitInput(scanner, "Genre");
+                validatorMovie.setGenre(genre);
+                break;
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
+        }
+
+        // color
+        while (true) {
+            try {
+                isColorMovie = decideColor();
+                validatorMovie.setIsColor(isColorMovie);
+                break;
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
+        }
+
+        // create movie
+        if (action == 1) {
+            controller.addMovie(title, director, year, minutes, isColorMovie, genre);
+            System.out.println("the movie '" + title + "' was added to the collection!");
+        }
+
+        // edit movie
+        else if (action == 2) {
+            boolean result = controller.editMovie(chosenMovie, title, director, year, minutes, isColorMovie, genre);
+            if (result) {
+                System.out.println("The movie was edited with success");
+            } else System.out.println("The movie wasn't edited due to an error");
+        }
     }
 }
+
+

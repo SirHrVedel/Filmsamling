@@ -1,10 +1,8 @@
 import java.io.FileNotFoundException;
 
 public class Main {
-    static void main(String[] args) throws FileNotFoundException {
-
+    static void main(String[] args) {
         UserInterface ui = new UserInterface();
         ui.startProgram();
-
     }
 }
