@@ -5,16 +5,12 @@ import java.util.ArrayList;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 import java.time.format.DateTimeParseException;
-import java.time.LocalDate;
 
 public class UserInterface {
-    private Scanner scanner = new Scanner(System.in);
-    private Controller controller = new Controller();
+    private final Scanner scanner = new Scanner(System.in);
+    private final Controller controller = new Controller();
 
-    public UserInterface() throws FileNotFoundException {
-    }
-
-    public void startProgram() throws FileNotFoundException {
+    public void startProgram() {
         loadMovies();
         printWelcome();
         try {
@@ -29,7 +25,7 @@ public class UserInterface {
                         case ("5") -> makeLoan();
                         case ("help") -> printWelcome();
                         case ("exit") -> {
-                            System.out.println("Goodbye");
+                            exitMsg();
                             return;
                         }
                         default -> System.out.println("Unknown command: " + input + ".");
