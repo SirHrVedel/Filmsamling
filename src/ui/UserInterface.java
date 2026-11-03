@@ -1,3 +1,8 @@
+package ui;
+
+import domainmodel.Controller;
+import domainmodel.Movie;
+
 import java.io.FileNotFoundException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -78,14 +83,14 @@ public class UserInterface {
         System.out.println("2. Delete movie.");
         System.out.println("3. Edit a movie");
         System.out.println("4. Mark movie as watched");
-        System.out.println("5. Loan movie");
+        System.out.println("5. domainmodel.Loan movie");
         System.out.println("6. Show all movies.");
         System.out.println("help - Possible commands");
         System.out.println("exit - End program");
     }
 
     public void loanOptions() {
-        System.out.println("Loan");
+        System.out.println("domainmodel.Loan");
         System.out.println("Return");
         System.out.println("Due");
         System.out.println("Fine");
@@ -210,7 +215,7 @@ public class UserInterface {
             }
             case "return" -> {
                 loanMovie.returnMovie();
-                System.out.println("Movie returned");
+                System.out.println("domainmodel.Movie returned");
             }
             case "due" -> {
                 if (loanMovie.isLoaned()) {
@@ -290,7 +295,7 @@ public class UserInterface {
         // title
         while (true) {
             try {
-                title = awaitInput(scanner, "Movie title");
+                title = awaitInput(scanner, "domainmodel.Movie title");
                 validatorMovie.setTitle(title);
                 break;
             } catch (Exception e) {

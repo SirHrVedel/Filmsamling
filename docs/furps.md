@@ -4,7 +4,7 @@
 
 **Opfyldt:** Delvist.
 
-**Hvor:** `MovieCollection.java` indeholder metoderne `addMovie()`, `searchMovies()`, `editMovie()` og `deleteMovie()`.
+**Hvor:** `domainmodel.MovieCollection.java` indeholder metoderne `addMovie()`, `searchMovies()`, `editMovie()` og `deleteMovie()`.
 
 ---
 
@@ -14,7 +14,7 @@
 
 **Opfyldt:** Ja.
 
-**Hvor:** `UserInterface.java`, metoden `startProgram()`.
+**Hvor:** `ui.UserInterface.java`, metoden `startProgram()`.
 
 ---
 
@@ -24,7 +24,7 @@
 
 **Opfyldt:** Ja.
 
-**Hvor:** `UserInterface.java`, metoden `awaitInputInt()`.
+**Hvor:** `ui.UserInterface.java`, metoden `awaitInputInt()`.
 
 ---
 
@@ -34,7 +34,7 @@
 
 **Opfyldt:** Ja.
 
-**Hvor:** `MovieCollection.java`, metoden `searchMovies()`.
+**Hvor:** `domainmodel.MovieCollection.java`, metoden `searchMovies()`.
 
 ---
 
@@ -44,4 +44,4 @@
 
 **Opfyldt:** Ja.
 
-**Hvor:** `Movie.java`, `MovieCollection.java`, `Controller.java` og `UserInterface.java`.
+**Hvor:** `domainmodel.Movie.java`, `domainmodel.MovieCollection.java`, `domainmodel.Controller.java` og `ui.UserInterface.java`.

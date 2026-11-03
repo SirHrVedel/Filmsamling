@@ -1,5 +1,7 @@
 import java.util.ArrayList;
 
+import domainmodel.Movie;
+import domainmodel.MovieCollection;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
