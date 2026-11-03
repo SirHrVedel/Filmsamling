@@ -120,12 +120,18 @@ public class UserInterface {
             System.out.println(actionMsg);
         }
         for (int i = 0; i < movies.size(); i++) {
-            System.out.println((i + 1) + ". " + movies.get(i).getTitle());
+            Movie movie = movies.get(i);
+            System.out.println((i + 1) + ". " + movie.getTitle() + ", " + movie.getInstructor() + ", " + movie.getYear());
         }
+        System.out.println("Type 0 to cancel movie choice.");
         while (true) {
             int chosen = awaitInputInt(scanner, "Which movie?");
+            if (chosen == 0){
+                System.out.println("Cancelled choice");
+                return null;
+            }
             if (chosen < 1 || chosen > movies.size()) {
-                System.out.println("invalid decision!");
+                System.out.println("Invalid decision!");
             } else return movies.get(chosen - 1);
         }
     }
@@ -136,13 +142,15 @@ public class UserInterface {
             return;
         }
         String inputString = awaitInput(scanner, "What is the name of the movie you want to remove?");
-        String movieTitle;
         ArrayList<Movie> movies = controller.searchMovies(inputString);
 
         if (movies.isEmpty()) {
             System.out.println("No movies of that name was found");
         } else {
             Movie chosenMovie = chooseMovie("Which movie do you want to delete?");
+            if (chosenMovie == null){
+                return;
+            }
             boolean result = controller.deleteMovie(chosenMovie);
             if (result) {
                 System.out.println("The movie '" + chosenMovie.getTitle() + "' was deleted");
@@ -260,7 +268,12 @@ public class UserInterface {
             if (movies.isEmpty()) {
                 System.out.println("No movies to edit.");
                 return;
-            } else chosenMovie = chooseMovie("Which movie do you want to edit?");
+            } else {
+                chosenMovie = chooseMovie("Which movie do you want to edit?");
+                if (chosenMovie == null){
+                    return;
+                }
+            }
         }
 
         Movie validatorMovie = new Movie("test", "test", 1889, 1, true, "test");
