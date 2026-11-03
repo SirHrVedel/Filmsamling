@@ -30,6 +30,7 @@ public class UserInterface {
                         case ("4") -> markMovieAsWatched();
                         case ("5") -> makeLoan();
                         case ("6") -> printMovieList();
+                        case ("7") -> printMovieSortOptions();
                         case ("help") -> printWelcome();
                         case ("exit") -> {
                             exitMsg();
@@ -85,6 +86,7 @@ public class UserInterface {
         System.out.println("4. Mark movie as watched");
         System.out.println("5. Loan movie");
         System.out.println("6. Show all movies.");
+        System.out.println("7. Movie list sorting options");
         System.out.println("help - Possible commands");
         System.out.println("exit - End program");
     }
@@ -374,10 +376,15 @@ public class UserInterface {
         }
     }
 
-    public void printMoviesAlphabetical(){
-
-
+    public void printMovieSortOptions(){
+        System.out.println("Movies sorted by: Title");
+        System.out.println("Movies sorted by: Director");
+        System.out.println("Movies sorted by: Year");
+        System.out.println("Movies sorted by: Length in minutes");
+        System.out.println("Movies sorted by: Genre");
     }
+
+
 }
 
 
