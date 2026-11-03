@@ -29,4 +29,15 @@ class MovieTest {
         assertEquals(26, days);
     }
 
+    @Test
+    void testTypeRejectionThrow() {
+        Movie movieTest = new Movie("Jaws", "Steven Spielberg", 1975, 124, true, "Thriller");
+
+        assertThrows(IllegalArgumentException.class, () -> movieTest.setTitle(""));
+        assertThrows(IllegalArgumentException.class, () -> movieTest.setInstructor(""));
+        assertThrows(IllegalArgumentException.class, () -> movieTest.setYear(1800));
+        assertThrows(IllegalArgumentException.class, () -> movieTest.setMinutes(0));
+        assertThrows(IllegalArgumentException.class, () -> movieTest.setGenre(""));
+    }
+
 }
