@@ -291,4 +291,9 @@ public class UserInterface {
         System.out.println("Goodbye!");
 
     }
+
+    public void printMoviesAlphabetical(){
+
+
+    }
 }

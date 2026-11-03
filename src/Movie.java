@@ -1,7 +1,7 @@
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 
-public class Movie {
+public class Movie implements Comparable<Movie> {
     private String title;
     private String instructor;
     private int year;
@@ -10,6 +10,11 @@ public class Movie {
     private boolean isInColor;
     private LocalDate lastWatched;
     private Loan loan;
+
+    @Override
+    public int compareTo(Movie other) {
+        return title.compareToIgnoreCase(other.title);
+    }
 
     public Movie(String title, String instructor, int year, int minutes, boolean isColor, String genre){
         setTitle(title);
