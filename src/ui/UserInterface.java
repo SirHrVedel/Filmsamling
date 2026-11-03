@@ -2,6 +2,7 @@ package ui;
 
 import domainmodel.Controller;
 import domainmodel.Movie;
+import domainmodel.SortField;
 
 import java.io.FileNotFoundException;
 import java.time.LocalDate;
@@ -51,7 +52,8 @@ public class UserInterface {
     }
 
     private void printMovieList() {
-        ArrayList<Movie> movies = controller.getMovies();
+        ArrayList<Movie> movies = controller.getMoviesSortedBy(SortField.TITLE);
+
         if (movies.isEmpty()){
             System.out.println("Wow, it's empty here. Create a movie to start tracking! :-)");
             return;
