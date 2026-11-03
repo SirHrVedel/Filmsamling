@@ -24,6 +24,7 @@ public class UserInterface {
                         case ("3") -> doMovieAction(2);
                         case ("4") -> markMovieAsWatched();
                         case ("5") -> makeLoan();
+                        case ("6") -> printMovieList();
                         case ("help") -> printWelcome();
                         case ("exit") -> {
                             exitMsg();
@@ -43,6 +44,19 @@ public class UserInterface {
         }
     }
 
+    private void printMovieList() {
+        ArrayList<Movie> movies = controller.getMovies();
+        if (movies.isEmpty()){
+            System.out.println("Wow, it's empty here. Create a movie to start tracking! :-)");
+            return;
+        }
+        int i = 0;
+        for (Movie movie : movies){
+            i++;
+            System.out.println(i + ". " + movie.getTitle() + ", " + movie.getInstructor() + ", " + movie.getYear());
+        }
+    }
+
 
     private boolean decideColor() {
         while (true) {
@@ -59,11 +73,13 @@ public class UserInterface {
     }
 
     public void printWelcome() {
+        System.out.println();
         System.out.println("1. Create movie.");
         System.out.println("2. Delete movie.");
         System.out.println("3. Edit a movie");
         System.out.println("4. Mark movie as watched");
         System.out.println("5. Loan movie");
+        System.out.println("6. Show all movies.");
         System.out.println("help - Possible commands");
         System.out.println("exit - End program");
     }
