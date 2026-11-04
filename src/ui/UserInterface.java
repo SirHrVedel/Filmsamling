@@ -25,12 +25,12 @@ public class UserInterface {
                     printWelcome();
                     String input = awaitInput(scanner, "").toLowerCase();
                     switch (input) {
-                        case ("1") -> doMovieAction(1);
+                        case ("1") -> doMovieAction(1); // create movie
                         case ("2") -> deleteMovie();
-                        case ("3") -> doMovieAction(2);
+                        case ("3") -> doMovieAction(2); // edit movie
                         case ("4") -> markMovieAsWatched();
                         case ("5") -> makeLoan();
-                        case ("6") -> printMovieList();
+                        case ("6") -> printMovieList(SortField.TITLE);
                         case ("7") -> printMovieSortOptions();
                         case ("help") -> printWelcome();
                         case ("exit") -> {
@@ -51,8 +51,8 @@ public class UserInterface {
         }
     }
 
-    private void printMovieList() {
-        ArrayList<Movie> movies = controller.getMoviesSortedBy(SortField.TITLE);
+    private void printMovieList(SortField sortType) {
+        ArrayList<Movie> movies = controller.getMoviesSortedBy(sortType);
 
         if (movies.isEmpty()){
             System.out.println("Wow, it's empty here. Create a movie to start tracking! :-)");
@@ -261,8 +261,9 @@ public class UserInterface {
     }
 
     /*
-        doMovieAction()
-        Supports creating and editing a movie. validates input on the fly and reprompts on invalid input at the current step.
+       *** doMovieAction() ***
+        Supports creating and editing a movie. validates input on the fly
+        and reprompts on invalid input at the current step.
         action
             1 = create movie
             2 = edit movie
@@ -379,11 +380,22 @@ public class UserInterface {
     }
 
     public void printMovieSortOptions(){
-        System.out.println("Movies sorted by: Title");
-        System.out.println("Movies sorted by: Director");
-        System.out.println("Movies sorted by: Year");
-        System.out.println("Movies sorted by: Length in minutes");
-        System.out.println("Movies sorted by: Genre");
+        System.out.println("Show the movies sorted by:");
+        System.out.println("1. Title");
+        System.out.println("2. Director");
+        System.out.println("3. Year");
+        System.out.println("4. Length in minutes");
+        System.out.println("5. Genre");
+        int input = awaitInputInt(scanner, "Please make a choice by inputting the corresponding number.");
+
+        switch (input){
+            case 1 -> printMovieList(SortField.TITLE);
+            case 2 -> printMovieList(SortField.DIRECTOR);
+            case 3 -> printMovieList(SortField.YEAR);
+            case 4 -> printMovieList(SortField.LENGTH);
+            case 5 -> printMovieList(SortField.GENRE);
+            default -> System.out.println("Not a valid number!");
+        }
     }
 
 
