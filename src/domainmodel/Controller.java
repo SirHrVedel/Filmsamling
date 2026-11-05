@@ -64,23 +64,11 @@ public class Controller {
     }
 
     public int loadMovies() throws FileNotFoundException {
-        Scanner fileScanner = new Scanner(new File("movies.csv"));
-        ArrayList<Movie> movies = new ArrayList<>();
-        boolean isHeader = true;
-        while (fileScanner.hasNextLine()) {
-            String line = fileScanner.nextLine();
-            if (isHeader) {
-                isHeader = false;
-                continue;
-            }
-            Movie movie = fileHandler.parseMovie(line);
-            if (movie != null) {
-                movieCollection.addMovie(movie);
-            } else {
-                fileHandler.countSkippedLine();
-            }
+        ArrayList<Movie> loadResult = fileHandler.load();
+        for (Movie movie : loadResult) {
+            movieCollection.addMovie(movie);
         }
-        return getMovies().size();
+        return movieCollection.getNumberOfMovies();
     }
 
     public int getSkippedLineCount() {

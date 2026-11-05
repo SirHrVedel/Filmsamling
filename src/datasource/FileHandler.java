@@ -8,6 +8,7 @@ import java.io.PrintStream;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class FileHandler {
     private static final String HEADER = "title;director;yearCreated;lengthInMinutes;inColor;genre;lastWatched";
@@ -75,5 +76,27 @@ public class FileHandler {
 
     public void countSkippedLine() {
         skippedLineCount++;
+    }
+
+
+    public ArrayList<Movie> load() throws FileNotFoundException {
+        Scanner fileScanner = new Scanner(new File(fileName));
+        ArrayList<Movie> movies = new ArrayList<>();
+        boolean isHeader = true;
+        while (fileScanner.hasNextLine()) {
+            String line = fileScanner.nextLine();
+            if (isHeader) {
+                isHeader = false;
+                continue;
+            }
+            Movie movie = parseMovie(line);
+            if (movie != null) {
+                movies.add(movie);
+            } else {
+                countSkippedLine();
+            }
+        }
+        fileScanner.close();
+        return movies;
     }
 }
