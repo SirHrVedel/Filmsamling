@@ -46,9 +46,6 @@ public class Loan {
         long fine = getDaysOver(today) * finePerDay;
         if (fine > maxFine) {
             return maxFine;
-        } else {return fine;}
-
+        } else return fine;
     }
-
-
 }

@@ -11,16 +11,16 @@ import java.util.ArrayList;
 
 public class FileHandler {
     private static final String HEADER = "title;director;yearCreated;lengthInMinutes;inColor;genre;lastWatched";
-    private String fileName;
+    private final String fileName;
     private int skippedLineCount = 0;
 
     public FileHandler(String fileName) {
         this.fileName = fileName;
     }
 
-    // Returnerer null, hvis linjen ikke er en gyldig film
+    // Returns null if the line is an invalid movie
     public Movie parseMovie(String line) {
-        // -1 betyder: behold tomme felter i slutningen af linjen (lastWatched kan være tom)
+        // -1 means: keep empty fields on the line, last watched can be empty and is accepted.
         String[] fields = line.split(";", -1);
         if (fields.length != 7) {
             return null;
@@ -56,9 +56,9 @@ public class FileHandler {
     }
 
     public String toCsvLine(Movie movie) {
-        String lastWatched = "";   // tomt felt = aldrig set
+        String lastWatched = "";   // empty -> never watched
         if (movie.hasBeenWatched()) {
-            lastWatched = movie.getLastWatched().toString();   // fx 2026-10-30
+            lastWatched = movie.getLastWatched().toString();   // ex 2026-10-30
         }
         return movie.getTitle() + ";"
                 + movie.getInstructor() + ";"

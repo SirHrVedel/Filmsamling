@@ -18,7 +18,7 @@ public class Movie implements Comparable<Movie> {
         return title.compareToIgnoreCase(other.title);
     }
 
-    public Movie(String title, String instructor, int year, int minutes, boolean isColor, String genre){
+    public Movie(String title, String instructor, int year, int minutes, boolean isColor, String genre) {
         setTitle(title);
         setInstructor(instructor);
         setYear(year);
@@ -26,54 +26,63 @@ public class Movie implements Comparable<Movie> {
         setGenre(genre);
         this.isInColor = isColor;
     }
-   public String getTitle(){
+
+    public String getTitle() {
         return title;
-   }
-   public String getInstructor(){
+    }
+
+    public String getInstructor() {
         return instructor;
-   }
-   public int getYear(){
+    }
+
+    public int getYear() {
         return year;
-   }
-   public int getMinutes(){
+    }
+
+    public int getMinutes() {
         return minutes;
-   }
-   public String getGenre(){
+    }
+
+    public String getGenre() {
         return genre;
-   }
-   public boolean getIsColor(){
+    }
+
+    public boolean getIsColor() {
         return isInColor;
-   }
-   public void setGenre(String genre){
-        if (genre.isEmpty()){
+    }
+
+    public void setGenre(String genre) {
+        if (genre.isEmpty()) {
             throw new IllegalArgumentException(
                     "A genre must be assigned!"
             );
         }
         this.genre = genre;
-   }
+    }
 
     public void setIsColor(boolean isColor) {
         this.isInColor = isColor;
     }
 
     public void setInstructor(String instructor) {
-        if (instructor.isEmpty()){
+        if (instructor.isEmpty()) {
             throw new IllegalArgumentException(
                     "A director must be assigned!"
             );
         }
         this.instructor = instructor;
     }
-    public void setTitle(String title){
-        if (title.isEmpty()){
+
+    public void setTitle(String title) {
+        if (title.isEmpty()) {
             throw new IllegalArgumentException(
                     "A title must be assigned!"
             );
         }
         this.title = title;
     }
-    public void setYear(int year){
+
+    public void setYear(int year) {
         int magicLimit = 1888;
         int currentYear = LocalDate.now().getYear() + 1;
         if (year <= magicLimit || year > currentYear) {
@@ -83,17 +92,20 @@ public class Movie implements Comparable<Movie> {
         }
         this.year = year;
     }
-    public void setMinutes(int minutes){
-        if (minutes < 1){
+
+    public void setMinutes(int minutes) {
+        if (minutes < 1) {
             throw new IllegalArgumentException(
                     "The movie's runtime must be 1 minute or longer!"
             );
         }
         this.minutes = minutes;
     }
+
     public void markAsWatched(LocalDate date) {
         lastWatched = date;
     }
+
     public void markAsNotWatched() {
         lastWatched = null;
     }
@@ -106,26 +118,25 @@ public class Movie implements Comparable<Movie> {
         return lastWatched;
     }
 
-    public long getDaysSinceWatched(LocalDate today){
+    public long getDaysSinceWatched(LocalDate today) {
         return ChronoUnit.DAYS.between(lastWatched, today);
     }
 
-    public void loanOut(LocalDate date){
+    public void loanOut(LocalDate date) {
         this.loan = new Loan(title, date);
     }
 
-    public void returnMovie(){
+    public void returnMovie() {
         this.loan = null;
     }
 
-    public boolean isLoaned(){
+    public boolean isLoaned() {
         return loan != null;
     }
 
-    public Loan getLoan(){
+    public Loan getLoan() {
         return loan;
     }
-
 
 
 }

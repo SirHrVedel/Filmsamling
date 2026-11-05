@@ -1,4 +1,6 @@
-package domainmodel;
+package ComparatorClasses;
+
+import domainmodel.Movie;
 
 import java.util.Comparator;
 

@@ -54,12 +54,12 @@ public class UserInterface {
     private void printMovieList(SortField sortType) {
         ArrayList<Movie> movies = controller.getMoviesSortedBy(sortType);
 
-        if (movies.isEmpty()){
+        if (movies.isEmpty()) {
             System.out.println("Wow, it's empty here. Create a movie to start tracking! :-)");
             return;
         }
         int i = 0;
-        for (Movie movie : movies){
+        for (Movie movie : movies) {
             i++;
             System.out.println(i + ". " + movie.getTitle() + ", " + movie.getInstructor() + ", " + movie.getYear());
         }
@@ -135,7 +135,7 @@ public class UserInterface {
         System.out.println("Type 0 to cancel movie choice.");
         while (true) {
             int chosen = awaitInputInt(scanner, "Which movie?");
-            if (chosen == 0){
+            if (chosen == 0) {
                 System.out.println("Cancelled choice");
                 return null;
             }
@@ -157,7 +157,7 @@ public class UserInterface {
             System.out.println("No movies of that name was found");
         } else {
             Movie chosenMovie = chooseMovie("Which movie do you want to delete?");
-            if (chosenMovie == null){
+            if (chosenMovie == null) {
                 return;
             }
             boolean result = controller.deleteMovie(chosenMovie);
@@ -242,7 +242,7 @@ public class UserInterface {
     private void loadMovies() {
         try {
             int count = controller.loadMovies();
-            System.out.println(count + " movies are loaded.");
+            System.out.println(count + " movies was loaded.");
             int skipped = controller.getSkippedLineCount();
             if (skipped > 0) {
                 System.out.println("Warning: " + skipped + " line(s) could not be read, and was skipped.");
@@ -280,7 +280,7 @@ public class UserInterface {
                 return;
             } else {
                 chosenMovie = chooseMovie("Which movie do you want to edit?");
-                if (chosenMovie == null){
+                if (chosenMovie == null) {
                     return;
                 }
             }
@@ -379,7 +379,7 @@ public class UserInterface {
         }
     }
 
-    public void printMovieSortOptions(){
+    public void printMovieSortOptions() {
         System.out.println("Show the movies sorted by:");
         System.out.println("1. Title");
         System.out.println("2. Director");
@@ -388,7 +388,7 @@ public class UserInterface {
         System.out.println("5. Genre");
         int input = awaitInputInt(scanner, "Please make a choice by inputting the corresponding number.");
 
-        switch (input){
+        switch (input) {
             case 1 -> printMovieList(SortField.TITLE);
             case 2 -> printMovieList(SortField.DIRECTOR);
             case 3 -> printMovieList(SortField.YEAR);

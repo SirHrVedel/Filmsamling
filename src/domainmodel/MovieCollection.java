@@ -70,9 +70,9 @@ public class MovieCollection {
         return null;
     }
 
-    public ArrayList<Movie> getMoviesNotWatchedSince(LocalDate date){
+    public ArrayList<Movie> getMoviesNotWatchedSince(LocalDate date) {
         ArrayList<Movie> listOfMoviesNotWatchedSinceDate = new ArrayList<>();
-        for (Movie movie: movies){
+        for (Movie movie : movies) {
             if (!movie.hasBeenWatched() || movie.getLastWatched().isBefore(date)) {
                 listOfMoviesNotWatchedSinceDate.add(movie);
             }
@@ -80,14 +80,14 @@ public class MovieCollection {
         return listOfMoviesNotWatchedSinceDate;
     }
 
-    public ArrayList<Movie> getMoviesSortedByTitle(){
+    public ArrayList<Movie> getMoviesSortedByTitle() {
         ArrayList<Movie> sorted = new ArrayList<>(movies);
         Collections.sort(sorted);
         return sorted;
 
     }
 
-    public ArrayList<Movie> getSortedMovies(Comparator<Movie> comparator){
+    public ArrayList<Movie> getSortedMovies(Comparator<Movie> comparator) {
         ArrayList<Movie> sorted = new ArrayList<>(movies);
         sorted.sort(comparator);
         return sorted;
