@@ -1,6 +1,6 @@
 # Film Samling
 Filmsamlings projekt 
-Gruppemedlemmer:
+## Gruppemedlemmer
 | Navn | GitHub brugernavn |
 | :-----------  |:---------------|
 | Jonas         | Jonas874       |
