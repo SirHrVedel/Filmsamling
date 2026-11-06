@@ -1,4 +1,5 @@
-import domainmodel.Movie;
+package domainmodel;
+
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
